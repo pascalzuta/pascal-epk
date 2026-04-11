@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pascal — Solo Acoustic · Live</title>
+<meta name="description" content="Solo acoustic. Songs people know, played like they mean it. Available for pub and intimate venue bookings." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f4efe6;
+    --paper-2: #ece6d9;
+    --ink: #1a1714;
+    --ink-soft: #4a433b;
+    --ink-mute: #8a8175;
+    --rule: #d8cfbd;
+    --accent: #b23a1f;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 72px 32px 120px;
+  }
+
+  .serif { font-family: "Fraunces", Georgia, serif; font-optical-sizing: auto; }
+  .label {
+    font-family: "Inter", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 11px;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 500; margin: 0; }
+  h1 {
+    font-size: clamp(64px, 11vw, 112px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: clamp(26px, 3.2vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 18px;
+  }
+  h3 {
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+  }
+  p { margin: 0 0 18px; color: var(--ink-soft); }
+  p.lede {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(19px, 2.2vw, 22px);
+    line-height: 1.45;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--accent); }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 64px 0;
+  }
+
+  /* ---------- KICKER ---------- */
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .kicker .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(178,58,31,0.12);
+  }
+  .tagline {
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink-soft);
+    margin-top: -4px;
+    margin-bottom: 40px;
+  }
+
+  /* ---------- IMAGES ---------- */
+  figure { margin: 48px 0; }
+  figure img { display: block; width: 100%; height: auto; }
+  figcaption {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 10px;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .photo-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* ---------- DISPLAY LINE ---------- */
+  blockquote {
+    margin: 56px 0;
+    padding: 0;
+    border: 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.15;
+    color: var(--ink);
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- VIDEO ---------- */
+  .video-wrap { position: relative; margin: 24px 0 12px; }
+  .video-wrap video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #1a1714;
+  }
+
+  /* ---------- SPEC BLOCK ---------- */
+  .spec {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 14px 32px;
+    margin: 24px 0 8px;
+    padding: 28px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .spec dt {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-top: 3px;
+  }
+  .spec dd {
+    margin: 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 18px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  /* ---------- TRACKS ---------- */
+  .tracks { display: grid; gap: 28px; margin: 24px 0 8px; }
+  .track { border-top: 1px solid var(--rule); padding-top: 20px; }
+  .track:last-child { border-bottom: 1px solid var(--rule); padding-bottom: 24px; }
+  .track-head {
+    display: flex; align-items: baseline; gap: 18px;
+    margin-bottom: 14px;
+  }
+  .track-num {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--ink-mute);
+  }
+  .track-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .track-artist {
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-mute);
+    margin-top: 2px;
+  }
+  .track audio {
+    width: 100%;
+    height: 38px;
+    filter: grayscale(1) contrast(0.95);
+  }
+
+  /* ---------- SONGS ---------- */
+  .songs {
+    columns: 2;
+    column-gap: 48px;
+    margin: 24px 0 8px;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+  .songs .song { break-inside: avoid; display: block; }
+  .songs .song em { color: var(--ink-mute); font-style: italic; }
+
+  /* ---------- BOOKING ---------- */
+  .booking { margin-top: 24px; padding: 40px 0 8px; }
+  .booking .contact {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.5;
+  }
+  .booking .contact a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .booking .contact a:hover { border-color: var(--accent); }
+  .meta {
+    margin-top: 40px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 48px 24px 80px; }
+    .spec { grid-template-columns: 1fr; gap: 4px; }
+    .spec dt { padding-top: 12px; }
+    .songs { columns: 1; }
+    .photo-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- KICKER -->
+    <div class="kicker">
+      <span class="dot"></span>
+      <span class="label">Solo Acoustic · Available for booking</span>
+    </div>
+
+    <!-- HERO -->
+    <h1>Pascal</h1>
+    <p class="tagline">Nothing between me and the song. Nothing between the song and you.</p>
+
+    <!-- HERO IMAGE -->
+    <figure>
+      <img src="pascal-hero.jpg" alt="Pascal performing at a small venue with disco ball, drum kit and sticker-covered walls" />
+    </figure>
+
+    <!-- LEAD -->
+    <p class="lede">
+      Solo acoustic guitar and vocals. Songs drawn from Zach Bryan, Mumford and Sons, Coldplay, Springsteen, Glen Hansard, Death Cab for Cutie, Sara Bareilles, Tracy Chapman, Radiohead, Dylan &mdash; songs that say something true and don't look away from it.
+    </p>
+
+    <p>
+      Less a covers night than a conversation. Longing, perseverance, the quiet dignity of ordinary life. Creep next to Redemption Song. Falling Slowly after Dancing in the Dark. Rock swagger and quiet confession.
+    </p>
+
+    <!-- DISPLAY LINE -->
+    <blockquote>
+      One true thing at a time.
+    </blockquote>
+
+    <p>
+      No big moves. No over-singing. Between songs, one thing said plainly, then back into it.
+    </p>
+
+    <hr/>
+
+    <!-- LIVE VIDEO -->
+    <h3>Watch</h3>
+    <h2>One live take.</h2>
+    <div class="video-wrap">
+      <video controls preload="metadata" poster="pascal-live-poster.jpg">
+        <source src="pascal-live.mp4" type="video/mp4" />
+        Your browser doesn't support HTML video.
+      </video>
+    </div>
+
+    <hr/>
+
+    <!-- PHOTOS -->
+    <h3>On stage</h3>
+    <h2>Recent rooms.</h2>
+    <div class="photo-grid">
+      <img src="pascal-portrait.jpg" alt="Pascal at the microphone, close up" />
+      <img src="pascal-fullbody.jpg" alt="Pascal mid-performance with acoustic guitar" />
+    </div>
+    <figure style="margin-top:12px;">
+      <img src="pascal-room-blue.jpg" alt="Pascal singing, blue stage lighting, drum kit to the side" />
+    </figure>
+    <figure style="margin-top:12px;">
+      <img src="pascal-spotlit.jpg" alt="Pascal in spotlight with drum kit in background" />
+    </figure>
+
+    <hr/>
+
+    <!-- ABOUT (Option 2 — Dylan guitar wink) -->
+    <h3>About</h3>
+    <h2>A short version.</h2>
+    <p>
+      Marin County, California. Years of living rooms, kitchens, and the occasional small stage. At home: a 1950 acoustic that once belonged to Bob Dylan. On the road: something lighter.
+    </p>
+
+    <hr/>
+
+    <!-- BOOKER SPEC -->
+    <h3>For the booker</h3>
+    <h2>What the venue needs to know.</h2>
+
+    <dl class="spec">
+      <dt>Format</dt>
+      <dd>Solo acoustic guitar and vocals. No backing track. No PA drama.</dd>
+
+      <dt>Set length</dt>
+      <dd>45 / 60 / 90 minutes. Two sets available.</dd>
+
+      <dt>Suitable for</dt>
+      <dd>Pubs · Private functions · Intimate venues · Acoustic showcases</dd>
+
+      <dt>Tone</dt>
+      <dd>Warm. Emotionally honest. No filler, no hype.</dd>
+
+      <dt>Technical</dt>
+      <dd>Self-contained. Own gear. One power outlet and a corner.</dd>
+    </dl>
+
+    <hr/>
+
+    <!-- SONGS -->
+    <h3>Repertoire</h3>
+    <h2>Songs your crowd will know.</h2>
+    <div class="songs">
+      <span class="song">Something in the Orange <em>— Zach Bryan</em></span>
+      <span class="song">Forever <em>— Mumford and Sons</em></span>
+      <span class="song">Yellow <em>— Coldplay</em></span>
+      <span class="song">I Will Follow You Into the Dark <em>— Death Cab for Cutie</em></span>
+      <span class="song">Falling Slowly <em>— Glen Hansard</em></span>
+      <span class="song">Hungry Heart <em>— Springsteen</em></span>
+      <span class="song">Dancing in the Dark <em>— Springsteen</em></span>
+      <span class="song">Fast Car <em>— Tracy Chapman</em></span>
+      <span class="song">Redemption Song <em>— Bob Marley</em></span>
+      <span class="song">Creep <em>— Radiohead</em></span>
+      <span class="song">Wish You Were Here <em>— Pink Floyd</em></span>
+      <span class="song">With or Without You <em>— U2</em></span>
+      <span class="song">Good Riddance <em>— Green Day</em></span>
+      <span class="song">Don't Look Back in Anger <em>— Oasis</em></span>
+    </div>
+    <p style="font-size:13px; color: var(--ink-mute); margin-top:16px;">
+      ~60 songs in rotation. Full list on request.
+    </p>
+
+    <hr/>
+
+    <!-- LISTEN -->
+    <h3>Listen</h3>
+    <h2>Four from the set.</h2>
+    <div class="tracks">
+      <div class="track">
+        <div class="track-head">
+          <span class="track-num">01</span>
+          <div class="track-meta">
+            <div class="track-title">The Trail</div>
+            <div class="track-artist">Original</div>
+          </div>
+        </div>
+        <audio controls preload="none" src="pascal-the-trail.mp3">Your browser doesn't support audio playback.</audio>
+      </div>
+
+      <div class="track">
+        <div class="track-head">
+          <span class="track-num">02</span>
+          <div class="track-meta">
+            <div class="track-title">Creep</div>
+            <div class="track-artist">Radiohead</div>
+          </div>
+        </div>
+        <audio controls preload="none" src="pascal-creep.mp3">Your browser doesn't support audio playback.</audio>
+      </div>
+
+      <div class="track">
+        <div class="track-head">
+          <span class="track-num">03</span>
+          <div class="track-meta">
+            <div class="track-title">Dancing in the Dark</div>
+            <div class="track-artist">Bruce Springsteen</div>
+          </div>
+        </div>
+        <audio controls preload="none" src="pascal-dancing-in-the-dark.mp3">Your browser doesn't support audio playback.</audio>
+      </div>
+
+      <div class="track">
+        <div class="track-head">
+          <span class="track-num">04</span>
+          <div class="track-meta">
+            <div class="track-title">Falling Slowly</div>
+            <div class="track-artist">Glen Hansard</div>
+          </div>
+        </div>
+        <audio controls preload="none" src="pascal-falling-slowly.mp3">Your browser doesn't support audio playback.</audio>
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- BOOKING -->
+    <section class="booking">
+      <h3>Booking</h3>
+      <h2>Get in touch.</h2>
+      <p class="contact">
+        <a href="mailto:pascal.zuta@gmail.com">pascal.zuta@gmail.com</a><br/>
+        <span style="color:var(--ink-mute);">Marin County, California</span>
+      </p>
+
+      <div class="meta">
+        <span>Pascal · Live</span>
+        <span>EPK · 2026</span>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
