@@ -7,299 +7,358 @@
 <meta name="description" content="Solo acoustic. Songs people know, played like they mean it. Available for pub and intimate venue bookings." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
 <style>
+  /*
+    DESIGN SYSTEM
+    Fonts:    Fraunces 400 (headings, editorial), Inter 400/500 (body, labels)
+    Colors:   --ink (text), --mute (secondary), --accent (red), --bg, --rule
+    Sizes:    11px labels · 16px body · 20px featured · 32px h2 · display h1
+  */
   :root {
-    --paper: #f4efe6;
-    --paper-2: #ece6d9;
+    --bg: #f4efe6;
     --ink: #1a1714;
-    --ink-soft: #4a433b;
-    --ink-mute: #8a8175;
+    --mute: #8a8175;
     --rule: #d8cfbd;
     --accent: #b23a1f;
   }
 
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    background: var(--paper);
+    background: var(--bg);
     color: var(--ink);
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "Inter", -apple-system, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
   }
 
-  .wrap {
+  /* ---------- LAYOUT ---------- */
+  .section {
     max-width: 720px;
     margin: 0 auto;
-    padding: 72px 32px 120px;
+    padding: 72px 40px;
   }
 
-  .serif { font-family: "Fraunces", Georgia, serif; font-optical-sizing: auto; }
-  .label {
-    font-family: "Inter", sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 11px;
-    color: var(--ink-mute);
-    font-weight: 500;
-  }
-  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 500; margin: 0; }
+  /* ---------- TYPOGRAPHY ---------- */
+  h1, h2 { font-family: "Fraunces", Georgia, serif; font-weight: 400; color: var(--ink); }
   h1 {
-    font-size: clamp(64px, 11vw, 112px);
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-    font-weight: 500;
-    margin-bottom: 20px;
+    font-size: clamp(64px, 12vw, 120px);
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
   }
   h2 {
     font-size: clamp(26px, 3.2vw, 34px);
     line-height: 1.15;
     letter-spacing: -0.01em;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
-  h3 {
-    font-size: 15px;
+  .label {
     font-family: "Inter", sans-serif;
+    font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--ink-mute);
+    letter-spacing: 0.2em;
+    color: var(--mute);
+    display: block;
     margin-bottom: 14px;
   }
-  p { margin: 0 0 18px; color: var(--ink-soft); }
-  p.lede {
-    font-family: "Fraunces", Georgia, serif;
-    font-size: clamp(19px, 2.2vw, 22px);
-    line-height: 1.45;
-    color: var(--ink);
-    font-weight: 400;
-  }
+  p { color: var(--ink); margin-bottom: 16px; }
 
-  a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a { color: var(--ink); text-decoration: none; }
   a:hover { color: var(--accent); }
 
-  hr {
-    border: 0;
-    border-top: 1px solid var(--rule);
-    margin: 64px 0;
-  }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
 
-  /* ---------- KICKER ---------- */
-  .kicker {
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px 48px;
+    width: 100%;
+  }
+  .hero-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 32px;
-  }
-  .kicker .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px rgba(178,58,31,0.12);
-  }
-  .tagline {
-    font-family: "Fraunces", Georgia, serif;
-    font-style: italic;
-    font-size: 22px;
-    color: var(--ink-soft);
-    margin-top: -4px;
-    margin-bottom: 40px;
-  }
-
-  /* ---------- IMAGES ---------- */
-  figure { margin: 48px 0; }
-  figure img { display: block; width: 100%; height: auto; }
-  figcaption {
-    font-family: "Inter", sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    margin-top: 10px;
-  }
-
-  .photo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin: 32px 0;
+    padding: 20px 40px;
   }
-  .photo-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-  /* ---------- DISPLAY LINE ---------- */
-  blockquote {
-    margin: 56px 0;
-    padding: 0;
-    border: 0;
+  .hero-bar .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+  }
+  .hero h1 {
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    margin-bottom: 12px;
+  }
+  .hero .tagline {
     font-family: "Fraunces", Georgia, serif;
     font-style: italic;
-    font-size: clamp(30px, 4vw, 42px);
-    line-height: 1.15;
-    color: var(--ink);
-    font-weight: 400;
-    text-align: center;
-    letter-spacing: -0.01em;
-  }
-
-  /* ---------- VIDEO ---------- */
-  .video-wrap { position: relative; margin: 24px 0 12px; }
-  .video-wrap video {
-    display: block;
-    width: 100%;
-    height: auto;
-    background: #1a1714;
-  }
-
-  /* ---------- SPEC BLOCK ---------- */
-  .spec {
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 14px 32px;
-    margin: 24px 0 8px;
-    padding: 28px 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .spec dt {
-    font-family: "Inter", sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    padding-top: 3px;
-  }
-  .spec dd {
-    margin: 0;
-    font-family: "Fraunces", Georgia, serif;
-    font-size: 18px;
-    color: var(--ink);
+    font-size: 20px;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 1px 12px rgba(0,0,0,0.4);
     line-height: 1.4;
   }
 
-  /* ---------- TRACKS ---------- */
-  .tracks { display: grid; gap: 28px; margin: 24px 0 8px; }
-  .track { border-top: 1px solid var(--rule); padding-top: 20px; }
-  .track:last-child { border-bottom: 1px solid var(--rule); padding-bottom: 24px; }
-  .track-head {
-    display: flex; align-items: baseline; gap: 18px;
-    margin-bottom: 14px;
+  /* ---------- BIO ---------- */
+  .bio p.bio-text {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink);
   }
+  .bio .fans {
+    font-size: 13px;
+    color: var(--mute);
+    line-height: 2;
+    margin-top: 20px;
+  }
+
+  /* ---------- PHOTOS ---------- */
+  .photos-full {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  .photo-grid img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+  }
+
+  /* ---------- TRACKS ---------- */
+  .tracks { margin-top: 24px; }
+  .track {
+    border-top: 1px solid var(--rule);
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0 16px;
+    align-items: start;
+  }
+  .track:last-child { border-bottom: 1px solid var(--rule); }
   .track-num {
-    font-family: "Inter", sans-serif;
     font-size: 11px;
-    letter-spacing: 0.18em;
-    color: var(--ink-mute);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--mute);
+    padding-top: 3px;
   }
   .track-title {
     font-family: "Fraunces", Georgia, serif;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1.2;
     color: var(--ink);
   }
   .track-artist {
-    font-family: "Fraunces", Georgia, serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--ink-mute);
+    font-size: 13px;
+    color: var(--mute);
     margin-top: 2px;
   }
   .track audio {
     width: 100%;
-    height: 38px;
-    filter: grayscale(1) contrast(0.95);
+    height: 36px;
+    margin-top: 12px;
+    filter: grayscale(1) contrast(0.9);
+    opacity: 0.7;
+  }
+  .track audio:hover { opacity: 1; }
+
+  /* ---------- VIDEO ---------- */
+  .video-wrap {
+    margin-top: 24px;
+    overflow: hidden;
+  }
+  .video-wrap video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--ink);
   }
 
   /* ---------- SONGS ---------- */
   .songs {
     columns: 2;
     column-gap: 48px;
-    margin: 24px 0 8px;
+    margin-top: 24px;
     font-family: "Fraunces", Georgia, serif;
     font-size: 16px;
-    line-height: 1.9;
+    line-height: 2;
     color: var(--ink);
   }
   .songs .song { break-inside: avoid; display: block; }
-  .songs .song em { color: var(--ink-mute); font-style: italic; }
+  .songs .song em { color: var(--mute); font-style: italic; }
 
   /* ---------- BOOKING ---------- */
-  .booking { margin-top: 24px; padding: 40px 0 8px; }
+  .booking {
+    text-align: center;
+    padding: 72px 40px 96px;
+  }
   .booking .contact {
     font-family: "Fraunces", Georgia, serif;
     font-size: clamp(22px, 2.6vw, 28px);
     line-height: 1.5;
   }
-  .booking .contact a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .booking .contact a {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
   .booking .contact a:hover { border-color: var(--accent); }
+  .booking .location {
+    color: var(--mute);
+    font-size: 13px;
+    margin-top: 8px;
+  }
   .meta {
-    margin-top: 40px;
+    margin-top: 56px;
     font-size: 11px;
-    letter-spacing: 0.18em;
+    font-weight: 500;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--ink-mute);
+    color: var(--mute);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 32px;
     border-top: 1px solid var(--rule);
     padding-top: 24px;
   }
 
+  /* ---------- TRANSITIONS ---------- */
+  a, .track audio { transition: all 0.2s ease; }
+
+  /* ---------- RESPONSIVE ---------- */
   @media (max-width: 640px) {
-    .wrap { padding: 48px 24px 80px; }
-    .spec { grid-template-columns: 1fr; gap: 4px; }
-    .spec dt { padding-top: 12px; }
+    .section { padding: 48px 24px; }
+    .hero { height: 60vh; }
+    .hero-content { padding: 0 24px 32px; }
+    .hero-bar { padding: 16px 24px; }
     .songs { columns: 1; }
     .photo-grid { grid-template-columns: 1fr; }
+    .photo-grid img { aspect-ratio: 4/3; }
+    .booking { padding: 48px 24px 64px; }
   }
 </style>
 </head>
 <body>
-  <main class="wrap">
 
-    <!-- KICKER -->
-    <div class="kicker">
+  <!-- HERO -->
+  <div class="hero">
+    <img src="pascal-hero.jpg" alt="Pascal performing at a small venue with disco ball, drum kit and sticker-covered walls" />
+    <div class="hero-bar">
       <span class="dot"></span>
-      <span class="label">Solo Acoustic · Available for booking</span>
+      <span class="label" style="margin-bottom:0; color: rgba(255,255,255,0.6);">Solo Acoustic · Available for booking</span>
     </div>
+    <div class="hero-content">
+      <h1>Pascal</h1>
+      <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
+    </div>
+  </div>
 
-    <!-- HERO -->
-    <h1>Pascal</h1>
-    <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
-
-    <!-- HERO IMAGE -->
-    <figure>
-      <img src="pascal-hero.jpg" alt="Pascal performing at a small venue with disco ball, drum kit and sticker-covered walls" />
-    </figure>
-
-    <!-- LEAD -->
-    <p class="lede">
-      Solo acoustic guitar and vocals. Songs that say something true and don't look away from it.
+  <!-- BIO -->
+  <div class="section bio">
+    <span class="label">Bio</span>
+    <h2>Honest music, nothing held back.</h2>
+    <p class="bio-text">
+      A Marin County solo act — covers and originals on acoustic guitar, songs picked for what they say, every word meant.
     </p>
-    <p style="font-family: 'Fraunces', Georgia, serif; font-size: 15px; line-height: 1.8; color: var(--ink-soft); margin-top: -4px; margin-bottom: 32px;">
-      Springsteen · Zach Bryan · Mumford and Sons · Radiohead · Bob Dylan · Coldplay · Glen Hansard · Death Cab for Cutie · Sara Bareilles · Tracy Chapman
-    </p>
+    <div class="fans">
+      For fans of Springsteen · Zach Bryan · Mumford and Sons · Radiohead · Bob Dylan · Coldplay · Glen Hansard · Death Cab for Cutie · Sara Bareilles · Tracy Chapman
+    </div>
+  </div>
 
-    <p>
-      Less a covers night than a conversation. Longing, perseverance, the quiet dignity of ordinary life. Creep next to Redemption Song. Falling Slowly after Dancing in the Dark. Rock swagger and quiet confession.
-    </p>
+  <hr/>
 
-    <!-- DISPLAY LINE -->
-    <blockquote>
-      One true thing at a time.
-    </blockquote>
+  <!-- PRESS PHOTOS -->
+  <div class="section">
+    <span class="label">Press photos</span>
+    <div class="photos-full">
+      <div class="photo-grid">
+        <img src="pascal-portrait.jpg" alt="Pascal at the microphone, close up" style="object-position: center 20%;" />
+        <img src="pascal-fullbody.jpg" alt="Pascal mid-performance with acoustic guitar" style="object-position: center 25%;" />
+        <img src="pascal-room-blue.jpg" alt="Pascal singing, blue stage lighting" style="object-position: 30% 15%;" />
+        <img src="pascal-spotlit.jpg" alt="Pascal in spotlight" style="object-position: 35% 30%;" />
+      </div>
+    </div>
+  </div>
 
-    <p>
-      No big moves. No over-singing. Between songs, one thing said plainly, then back into it.
-    </p>
+  <!-- MUSIC -->
+  <div class="section">
+    <span class="label">Music</span>
+    <h2>Four from the set.</h2>
+    <div class="tracks">
+      <div class="track">
+        <span class="track-num">01</span>
+        <div class="track-info">
+          <div class="track-title">The Trail</div>
+          <div class="track-artist">Original</div>
+          <audio controls preload="none" src="pascal-the-trail.mp3">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
 
-    <!-- PHOTO: portrait beat before watch -->
-    <figure style="margin-top:48px; margin-bottom:48px;">
-      <img src="pascal-portrait.jpg" alt="Pascal at the microphone, close up" />
-    </figure>
+      <div class="track">
+        <span class="track-num">02</span>
+        <div class="track-info">
+          <div class="track-title">Creep</div>
+          <div class="track-artist">Radiohead</div>
+          <audio controls preload="none" src="pascal-creep.mp3">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
 
-    <!-- LIVE VIDEO -->
-    <h3>Watch</h3>
+      <div class="track">
+        <span class="track-num">03</span>
+        <div class="track-info">
+          <div class="track-title">Dancing in the Dark</div>
+          <div class="track-artist">Bruce Springsteen</div>
+          <audio controls preload="none" src="pascal-dancing-in-the-dark.mp3">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
+
+      <div class="track">
+        <span class="track-num">04</span>
+        <div class="track-info">
+          <div class="track-title">Falling Slowly</div>
+          <div class="track-artist">Glen Hansard</div>
+          <audio controls preload="none" src="pascal-falling-slowly.mp3">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="section">
+    <span class="label">Video</span>
     <h2>One live take.</h2>
     <div class="video-wrap">
       <video controls preload="metadata" poster="pascal-live-poster.jpg">
@@ -307,65 +366,13 @@
         Your browser doesn't support HTML video.
       </video>
     </div>
+  </div>
 
-    <!-- PHOTO: fullbody beat between watch and listen -->
-    <figure style="margin-top:48px; margin-bottom:48px;">
-      <img src="pascal-fullbody.jpg" alt="Pascal mid-performance with acoustic guitar" />
-    </figure>
+  <hr/>
 
-    <!-- LISTEN -->
-    <h3>Listen</h3>
-    <h2>Four from the set.</h2>
-    <div class="tracks">
-      <div class="track">
-        <div class="track-head">
-          <span class="track-num">01</span>
-          <div class="track-meta">
-            <div class="track-title">The Trail</div>
-            <div class="track-artist">Original</div>
-          </div>
-        </div>
-        <audio controls preload="none" src="pascal-the-trail.mp3">Your browser doesn't support audio playback.</audio>
-      </div>
-
-      <div class="track">
-        <div class="track-head">
-          <span class="track-num">02</span>
-          <div class="track-meta">
-            <div class="track-title">Creep</div>
-            <div class="track-artist">Radiohead</div>
-          </div>
-        </div>
-        <audio controls preload="none" src="pascal-creep.mp3">Your browser doesn't support audio playback.</audio>
-      </div>
-
-      <div class="track">
-        <div class="track-head">
-          <span class="track-num">03</span>
-          <div class="track-meta">
-            <div class="track-title">Dancing in the Dark</div>
-            <div class="track-artist">Bruce Springsteen</div>
-          </div>
-        </div>
-        <audio controls preload="none" src="pascal-dancing-in-the-dark.mp3">Your browser doesn't support audio playback.</audio>
-      </div>
-
-      <div class="track">
-        <div class="track-head">
-          <span class="track-num">04</span>
-          <div class="track-meta">
-            <div class="track-title">Falling Slowly</div>
-            <div class="track-artist">Glen Hansard</div>
-          </div>
-        </div>
-        <audio controls preload="none" src="pascal-falling-slowly.mp3">Your browser doesn't support audio playback.</audio>
-      </div>
-    </div>
-
-    <hr/>
-
-    <!-- SONGS -->
-    <h3>Repertoire</h3>
+  <!-- REPERTOIRE -->
+  <div class="section">
+    <span class="label">Repertoire</span>
     <h2>Songs your crowd will know.</h2>
     <div class="songs">
       <span class="song">Something in the Orange <em>— Zach Bryan</em></span>
@@ -383,65 +390,26 @@
       <span class="song">Good Riddance <em>— Green Day</em></span>
       <span class="song">Don't Look Back in Anger <em>— Oasis</em></span>
     </div>
-    <p style="font-size:13px; color: var(--ink-mute); margin-top:16px;">
+    <p style="font-size:13px; color: var(--mute); margin-top:20px;">
       ~60 songs in rotation. Full list on request.
     </p>
+  </div>
 
-    <!-- PHOTO: mid-page mood break -->
-    <figure style="margin-top:48px; margin-bottom:48px;">
-      <img src="pascal-room-blue.jpg" alt="Pascal singing, blue stage lighting, drum kit to the side" />
-    </figure>
+  <hr/>
 
-    <!-- BOOKER SPEC -->
-    <h3>For the booker</h3>
-    <h2>What the venue needs to know.</h2>
-
-    <dl class="spec">
-      <dt>Format</dt>
-      <dd>Solo acoustic guitar and vocals. No backing track. No PA drama.</dd>
-
-      <dt>Set length</dt>
-      <dd>45 / 60 / 90 minutes. Two sets available.</dd>
-
-      <dt>Suitable for</dt>
-      <dd>Pubs · Private functions · Intimate venues · Acoustic showcases</dd>
-
-      <dt>Tone</dt>
-      <dd>Warm. Emotionally honest. No filler, no hype.</dd>
-
-      <dt>Technical</dt>
-      <dd>Self-contained. Own gear. One power outlet and a corner.</dd>
-    </dl>
-
-    <hr/>
-
-    <!-- ABOUT (Option 2 — Dylan guitar wink) -->
-    <h3>About</h3>
-    <h2>A short version.</h2>
-    <p>
-      Marin County, California. Years of living rooms, kitchens, and the occasional small stage. At home: a 1950 acoustic that once belonged to Bob Dylan. On the road: something lighter.
+  <!-- BOOKING -->
+  <div class="booking">
+    <span class="label">Booking</span>
+    <h2>Get in touch.</h2>
+    <p class="contact">
+      <a href="mailto:pascal.zuta@gmail.com">pascal.zuta@gmail.com</a>
     </p>
-    <figure style="margin-top:24px;">
-      <img src="pascal-spotlit.jpg" alt="Pascal in spotlight with drum kit in background" />
-    </figure>
+    <p class="location">Marin County, California</p>
+    <div class="meta">
+      <span>Pascal · Live</span>
+      <span>EPK · 2026</span>
+    </div>
+  </div>
 
-    <hr/>
-
-    <!-- BOOKING -->
-    <section class="booking">
-      <h3>Booking</h3>
-      <h2>Get in touch.</h2>
-      <p class="contact">
-        <a href="mailto:pascal.zuta@gmail.com">pascal.zuta@gmail.com</a><br/>
-        <span style="color:var(--ink-mute);">Marin County, California</span>
-      </p>
-
-      <div class="meta">
-        <span>Pascal · Live</span>
-        <span>EPK · 2026</span>
-      </div>
-    </section>
-
-  </main>
 </body>
 </html>
