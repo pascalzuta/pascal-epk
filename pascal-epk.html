@@ -83,18 +83,17 @@
   .hero {
     position: relative;
     width: 100%;
-    height: 80vh;
+    aspect-ratio: 16/10;
     overflow: hidden;
     display: flex;
     align-items: flex-end;
-    background: #0e0d0b;
   }
   .hero img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center center;
   }
   .hero-content {
@@ -255,8 +254,8 @@
   @media (max-width: 640px) {
     .section { padding: 48px 24px; }
     .top-bar { padding: 12px 24px; }
-    .hero { height: 75vh; }
-    .hero img { object-fit: cover; object-position: center 30%; }
+    .hero { aspect-ratio: auto; height: 70vh; }
+    .hero img { object-position: center 35%; }
     .hero-content { padding: 0 24px 32px; }
     .songs { columns: 1; }
     .photo-grid { grid-template-columns: 1fr; }
@@ -274,7 +273,7 @@
 
   <!-- HERO -->
   <div class="hero">
-    <img src="pascal-hero.jpg" alt="Pascal performing at a small venue with disco ball, drum kit and sticker-covered walls" />
+    <img src="pascal-hero-wide.jpg" alt="Pascal performing at a small venue with disco ball, drum kit and sticker-covered walls" />
     <div class="hero-content">
       <h1>Pascal</h1>
       <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
