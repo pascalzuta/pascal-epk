@@ -83,7 +83,7 @@
   .hero {
     position: relative;
     width: 100%;
-    aspect-ratio: 21/9;
+    aspect-ratio: 16/9;
     overflow: hidden;
     display: flex;
     align-items: flex-end;
@@ -94,7 +94,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 25%;
+    object-position: center 35%;
   }
   .hero-content {
     position: relative;
@@ -254,8 +254,8 @@
   @media (max-width: 640px) {
     .section { padding: 48px 24px; }
     .top-bar { padding: 12px 24px; }
-    .hero { aspect-ratio: auto; height: 70vh; }
-    .hero img { object-position: center 30%; transform: scale(1.15); }
+    .hero { aspect-ratio: 3/4; }
+    .hero img { object-position: center 30%; }
     .hero-content { padding: 0 24px 32px; }
     .songs { columns: 1; }
     .photo-grid { grid-template-columns: 1fr; }
@@ -268,7 +268,7 @@
 
   <!-- TOP BAR -->
   <div class="top-bar">
-    <span class="label" style="margin-bottom:0;">Available for booking</span>
+    <span class="label" style="margin-bottom:0; color: var(--ink);">Solo Acoustic · Available for booking</span>
   </div>
 
   <!-- HERO -->
