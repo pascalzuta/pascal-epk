@@ -34,7 +34,6 @@ header {
   top: 44px;
   z-index: 40;
   background: var(--white);
-  z-index: 100;
 }
 
 .logo {
