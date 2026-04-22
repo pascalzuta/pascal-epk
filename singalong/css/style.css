@@ -1,0 +1,394 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --gray: #999;
+  --border: #e0e0e0;
+  --font: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--white);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Header ── */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--black);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 100;
+}
+
+.logo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-decoration: none;
+  color: var(--black);
+  text-transform: uppercase;
+}
+
+.backstage-btn {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  color: var(--black);
+  text-transform: uppercase;
+  padding: 0.55rem 1.2rem;
+  border: 1px solid var(--black);
+  transition: background 0.2s, color 0.2s;
+}
+
+.backstage-btn:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* ── Main ── */
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+/* ── Song List ── */
+
+.song-list {
+  list-style: none;
+}
+
+.song-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.song-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.song-item:hover {
+  opacity: 0.4;
+}
+
+.song-number {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--gray);
+  min-width: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.song-info {
+  flex: 1;
+}
+
+.song-title {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.song-artist {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--gray);
+  margin-top: 0.2rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── Song Detail ── */
+
+.song-detail {
+  animation: fadeIn 0.25s ease;
+}
+
+.back-link {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  color: var(--black);
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 3rem;
+  transition: opacity 0.15s;
+}
+
+.back-link:hover {
+  opacity: 0.4;
+}
+
+.detail-title {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.detail-artist {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-top: 0.6rem;
+  letter-spacing: 0.06em;
+}
+
+.detail-divider {
+  width: 2rem;
+  height: 1px;
+  background: var(--black);
+  margin: 2.5rem 0;
+}
+
+.detail-lyrics {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+.no-lyrics {
+  color: var(--gray);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── Loading ── */
+
+.loading {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+  padding: 4rem 0;
+}
+
+/* ── Admin Layout ── */
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100vh - 57px);
+}
+
+.admin-sidebar {
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.admin-song-item {
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1.4;
+}
+
+.admin-song-item:hover {
+  background: #f5f5f5;
+}
+
+.admin-song-item.active {
+  background: var(--black);
+  color: var(--white);
+}
+
+.admin-editor {
+  padding: 2.5rem 3rem;
+  max-width: 720px;
+}
+
+.admin-editor-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.form-group {
+  margin-bottom: 1.8rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  color: var(--gray);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  font-family: var(--font);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.15s;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.form-input:focus {
+  border-color: var(--black);
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 400px;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  font-family: var(--font);
+  font-size: 0.88rem;
+  line-height: 1.8;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.form-textarea:focus {
+  border-color: var(--black);
+}
+
+.save-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.save-btn {
+  font-family: var(--font);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.7rem 2rem;
+  background: var(--black);
+  color: var(--white);
+  border: 1px solid var(--black);
+  cursor: pointer;
+  transition: opacity 0.15s;
+  border-radius: 0;
+}
+
+.save-btn:hover {
+  opacity: 0.7;
+}
+
+.save-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.save-status {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  transition: opacity 0.3s;
+}
+
+/* ── Password Gate ── */
+
+.gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 57px);
+}
+
+.gate-inner {
+  width: 100%;
+  max-width: 280px;
+  padding: 2rem;
+}
+
+.gate-error {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c00;
+  margin-top: 0.75rem;
+  min-height: 1rem;
+}
+
+/* ── Animations ── */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 640px) {
+  header {
+    padding: 1.2rem 1.5rem;
+  }
+
+  main {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .song-item {
+    gap: 1rem;
+    padding: 1.2rem 0;
+  }
+
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: 35vh;
+  }
+
+  .admin-editor {
+    padding: 2rem 1.5rem;
+  }
+}

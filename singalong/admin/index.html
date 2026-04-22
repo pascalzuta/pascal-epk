@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SETLIST — Backstage</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header>
+    <a class='logo' href='/singalong/'>Setlist</a>
+    <a class='backstage-btn' href='/singalong/'>Exit</a>
+  </header>
+
+  <!-- Password gate -->
+  <div id="gate" class="gate">
+    <div class="gate-inner">
+      <label class="form-label" for="gate-input">Password</label>
+      <input class="form-input" id="gate-input" type="password" placeholder="Enter password" autofocus>
+      <button class="save-btn" style="margin-top:1rem;width:100%" onclick="checkPassword()">Enter</button>
+      <p id="gate-error" class="gate-error"></p>
+    </div>
+  </div>
+
+  <!-- Admin content (hidden until authenticated) -->
+  <div class="admin-layout" id="admin" style="display:none">
+    <div class="admin-sidebar" id="sidebar">
+      <div class="loading" style="padding: 1.5rem;">Loading</div>
+    </div>
+    <div class="admin-editor admin-editor-empty" id="editor">
+      Select a song
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/supabase.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
