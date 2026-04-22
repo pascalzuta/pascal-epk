@@ -79,6 +79,63 @@
     text-align: center;
   }
 
+  /* ---------- NAV (HAMBURGER) ---------- */
+  .nav-toggle {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 50;
+    width: 40px;
+    height: 40px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: background .15s ease;
+  }
+  .nav-toggle:hover { background: #ebe4d5; }
+  .nav-toggle span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: var(--ink);
+  }
+  .nav-panel {
+    position: fixed;
+    top: 64px;
+    right: 20px;
+    z-index: 49;
+    min-width: 180px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 8px 0;
+    box-shadow: 0 8px 24px rgba(26,23,20,.08);
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+  }
+  .nav-panel.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .nav-panel a {
+    display: block;
+    padding: 10px 20px;
+    font-family: "Fraunces", serif;
+    font-size: 16px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-panel a:hover { background: #ebe4d5; color: var(--accent); }
+
   /* ---------- HERO ---------- */
   .hero {
     position: relative;
@@ -266,6 +323,15 @@
 </head>
 <body>
 
+  <!-- NAV -->
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav-panel" id="navPanel">
+    <a href="/">Home</a>
+    <a href="/singalong/">Singalong</a>
+  </nav>
+
   <!-- TOP BAR -->
   <div class="top-bar">
     <span class="label" style="margin-bottom:0; color: var(--ink);">Solo Acoustic · Available for booking</span>
@@ -405,5 +471,24 @@
     </div>
   </div>
 
+<script>
+  (function () {
+    var btn = document.getElementById('navToggle');
+    var panel = document.getElementById('navPanel');
+    function close() { panel.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+    function toggle(e) {
+      e.stopPropagation();
+      var open = panel.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', toggle);
+    document.addEventListener('click', function (e) {
+      if (!panel.contains(e.target) && e.target !== btn) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
 </body>
 </html>
