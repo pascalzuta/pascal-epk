@@ -403,21 +403,30 @@ body { padding-top: 44px; }
   z-index: 50;
   background: #f4efe6;
   color: #1a1714;
-  padding: 14px 40px;
-  text-align: center;
+  padding: 14px 24px;
   border-bottom: 1px solid #d8cfbd;
   font-family: "Inter", -apple-system, sans-serif;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 16px;
+}
+.site-topbar .topbar-label {
+  grid-column: 2;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .nav-toggle {
-  position: absolute;
-  top: 50%;
-  right: 24px;
-  transform: translateY(-50%);
+  grid-column: 3;
+  justify-self: end;
   width: 22px;
-  height: 18px;
+  height: 16px;
   background: transparent;
   border: none;
   padding: 0;
