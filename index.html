@@ -73,41 +73,44 @@
   hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
 
   /* ---------- TOP BAR ---------- */
+  body { padding-top: 44px; }
   .top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
     background: var(--bg);
     padding: 14px 40px;
     text-align: center;
+    border-bottom: 1px solid var(--rule);
   }
 
   /* ---------- NAV (HAMBURGER) ---------- */
   .nav-toggle {
-    position: fixed;
-    top: 16px;
-    right: 20px;
-    z-index: 50;
-    width: 40px;
-    height: 40px;
-    background: var(--bg);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    padding: 0;
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    transition: background .15s ease;
+    justify-content: space-between;
   }
-  .nav-toggle:hover { background: #ebe4d5; }
   .nav-toggle span {
     display: block;
-    width: 18px;
+    width: 100%;
     height: 1.5px;
     background: var(--ink);
   }
   .nav-panel {
     position: fixed;
-    top: 64px;
+    top: 52px;
     right: 20px;
     z-index: 49;
     min-width: 180px;
@@ -323,19 +326,17 @@
 </head>
 <body>
 
-  <!-- NAV -->
-  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <span class="label" style="margin-bottom:0; color: var(--ink);">Solo Acoustic · Available for booking</span>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
   <nav class="nav-panel" id="navPanel">
     <a href="/">Home</a>
     <a href="/singalong/">Singalong</a>
   </nav>
-
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <span class="label" style="margin-bottom:0; color: var(--ink);">Solo Acoustic · Available for booking</span>
-  </div>
 
   <!-- HERO -->
   <div class="hero">
