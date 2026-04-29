@@ -244,14 +244,30 @@
   }
   .nav-footer a:hover { color: var(--accent); border-color: var(--accent); }
 
+  /* ---------- NAME HEADER ---------- */
+  .name-header {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 40px 24px;
+    text-align: left;
+  }
+  .name-header h1 {
+    margin-bottom: 12px;
+  }
+  .name-header .tagline {
+    font-family: "Fraunces", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(20px, 2.6vw, 24px);
+    color: var(--mute);
+    line-height: 1.4;
+  }
+
   /* ---------- HERO ---------- */
   .hero {
     position: relative;
     width: 100%;
     aspect-ratio: 16/10;
     overflow: hidden;
-    display: flex;
-    align-items: flex-end;
   }
   .hero img {
     position: absolute;
@@ -261,40 +277,58 @@
     object-fit: cover;
     object-position: center center;
   }
-  .hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 40px 40px;
-    width: 100%;
-  }
-  .hero h1 {
-    color: #fff;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
-    margin-bottom: 12px;
-  }
-  .hero .tagline {
-    font-family: "Fraunces", Georgia, serif;
-    font-style: italic;
-    font-size: 20px;
-    color: rgba(255,255,255,0.85);
-    text-shadow: 0 1px 12px rgba(0,0,0,0.4);
-    line-height: 1.4;
-  }
 
   /* ---------- BIO ---------- */
+  .bio .fans-lead {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(22px, 3vw, 28px);
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .bio .fans-lead strong {
+    font-weight: 500;
+    color: var(--accent);
+  }
   .bio p.bio-text {
     font-family: "Fraunces", Georgia, serif;
-    font-size: 20px;
-    line-height: 1.6;
+    font-size: clamp(20px, 2.4vw, 24px);
+    line-height: 1.55;
     color: var(--ink);
+    margin-bottom: 20px;
   }
   .bio .fans {
+    font-size: 15px;
+    color: var(--mute);
+    line-height: 1.9;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .bio .repertoire-intro {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--mute);
+    margin-top: 32px;
+    margin-bottom: 16px;
+  }
+  .bio .songs-inline {
+    columns: 2;
+    column-gap: 40px;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+  .bio .songs-inline .song { break-inside: avoid; display: block; }
+  .bio .songs-inline .song em { color: var(--mute); font-style: italic; }
+  .bio .songs-note {
     font-size: 13px;
     color: var(--mute);
-    line-height: 2;
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   /* ---------- PHOTOS ---------- */
@@ -418,11 +452,11 @@
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 640px) {
     .section { padding: 48px 24px; }
-    .top-bar { padding: 12px 24px; }
-    .hero { aspect-ratio: auto; height: 70vh; }
+    .top-bar { padding: 12px 20px; }
+    .name-header { padding: 28px 24px 20px; }
+    .hero { aspect-ratio: auto; height: 56vh; }
     .hero img { object-position: center 35%; }
-    .hero-content { padding: 0 24px 32px; }
-    .songs { columns: 1; }
+    .bio .songs-inline { columns: 1; font-size: 18px; }
     .photo-grid { grid-template-columns: 1fr; }
     .photo-grid img { aspect-ratio: 4/3; }
     .booking { padding: 48px 24px 64px; }
@@ -454,32 +488,58 @@
     </div>
   </aside>
 
+  <!-- NAME HEADER -->
+  <header class="name-header">
+    <h1>Pascal Zuta</h1>
+    <p class="tagline">Honest songs, played straight.</p>
+  </header>
+
   <!-- HERO -->
   <div class="hero">
     <img src="pascal-hero-wide.jpg" alt="Pascal performing at a small venue with disco ball, drum kit and sticker-covered walls" />
-    <div class="hero-content">
-      <h1>Pascal Zuta</h1>
-      <p class="tagline">Honest songs, played straight.</p>
-    </div>
   </div>
 
   <!-- BIO -->
   <div class="section bio">
     <span class="label">Bio</span>
-    <h2>Songs that have something to say &mdash; delivered with intention.</h2>
-    <p class="bio-text">
-      A Marin County solo act on acoustic guitar. Covers and originals, chosen because there&rsquo;s something real in them worth hearing again, something that comes straight from the heart.
+    <p class="fans-lead">
+      <strong>For fans of Springsteen.</strong> The honesty, the storytelling, the way a song can hit you square in the chest &mdash; that&rsquo;s the territory.
     </p>
+    <p class="bio-text">
+      A Marin County solo act on acoustic guitar. Covers and originals, chosen because there&rsquo;s something real in them worth hearing again &mdash; something that comes straight from the heart and lands with intention.
+    </p>
+    <p class="bio-text">
+      About sixty songs in rotation: the ones a room already knows, played like they mean it, and a handful of originals cut from the same cloth.
+    </p>
+
+    <div class="repertoire-intro">A few from the set</div>
+    <div class="songs-inline">
+      <span class="song">Something in the Orange <em>&mdash; Zach Bryan</em></span>
+      <span class="song">Forever <em>&mdash; Mumford and Sons</em></span>
+      <span class="song">Yellow <em>&mdash; Coldplay</em></span>
+      <span class="song">I Will Follow You Into the Dark <em>&mdash; Death Cab for Cutie</em></span>
+      <span class="song">Falling Slowly <em>&mdash; Glen Hansard</em></span>
+      <span class="song">Hungry Heart <em>&mdash; Springsteen</em></span>
+      <span class="song">Dancing in the Dark <em>&mdash; Springsteen</em></span>
+      <span class="song">Fast Car <em>&mdash; Tracy Chapman</em></span>
+      <span class="song">Redemption Song <em>&mdash; Bob Marley</em></span>
+      <span class="song">Creep <em>&mdash; Radiohead</em></span>
+      <span class="song">Wish You Were Here <em>&mdash; Pink Floyd</em></span>
+      <span class="song">With or Without You <em>&mdash; U2</em></span>
+      <span class="song">Good Riddance <em>&mdash; Green Day</em></span>
+      <span class="song">Don&rsquo;t Look Back in Anger <em>&mdash; Oasis</em></span>
+    </div>
+    <p class="songs-note">Full list on request.</p>
+
     <div class="fans">
-      For fans of Springsteen · Zach Bryan · Mumford and Sons · Radiohead · Bob Dylan · Coldplay · Glen Hansard · Death Cab for Cutie · Sara Bareilles · Tracy Chapman
+      Also for fans of Zach Bryan · Mumford and Sons · Radiohead · Bob Dylan · Coldplay · Glen Hansard · Death Cab for Cutie · Sara Bareilles · Tracy Chapman
     </div>
   </div>
 
   <hr/>
 
-  <!-- PRESS PHOTOS -->
+  <!-- PHOTOS -->
   <div class="section">
-    <span class="label">Press photos</span>
     <div class="photos-full">
       <div class="photo-grid">
         <img src="pascal-portrait.jpg" alt="Pascal at the microphone, close up" style="object-position: center 20%;" />
@@ -543,33 +603,6 @@
         Your browser doesn't support HTML video.
       </video>
     </div>
-  </div>
-
-  <hr/>
-
-  <!-- REPERTOIRE -->
-  <div class="section">
-    <span class="label">Repertoire</span>
-    <h2>Songs your crowd will know.</h2>
-    <div class="songs">
-      <span class="song">Something in the Orange <em>— Zach Bryan</em></span>
-      <span class="song">Forever <em>— Mumford and Sons</em></span>
-      <span class="song">Yellow <em>— Coldplay</em></span>
-      <span class="song">I Will Follow You Into the Dark <em>— Death Cab for Cutie</em></span>
-      <span class="song">Falling Slowly <em>— Glen Hansard</em></span>
-      <span class="song">Hungry Heart <em>— Springsteen</em></span>
-      <span class="song">Dancing in the Dark <em>— Springsteen</em></span>
-      <span class="song">Fast Car <em>— Tracy Chapman</em></span>
-      <span class="song">Redemption Song <em>— Bob Marley</em></span>
-      <span class="song">Creep <em>— Radiohead</em></span>
-      <span class="song">Wish You Were Here <em>— Pink Floyd</em></span>
-      <span class="song">With or Without You <em>— U2</em></span>
-      <span class="song">Good Riddance <em>— Green Day</em></span>
-      <span class="song">Don't Look Back in Anger <em>— Oasis</em></span>
-    </div>
-    <p style="font-size:13px; color: var(--mute); margin-top:20px;">
-      ~60 songs in rotation. Full list on request.
-    </p>
   </div>
 
   <hr/>
