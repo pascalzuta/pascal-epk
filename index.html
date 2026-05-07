@@ -397,6 +397,30 @@
     height: auto;
     background: var(--ink);
   }
+  .video-grid {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .video-grid figure {
+    margin: 0;
+  }
+  .video-grid video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--ink);
+  }
+  .video-grid figcaption {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: var(--ink);
+    opacity: 0.8;
+  }
+  @media (max-width: 720px) {
+    .video-grid { grid-template-columns: 1fr; }
+  }
 
   /* ---------- SONGS ---------- */
   .songs {
@@ -574,7 +598,7 @@
         <div class="track-info">
           <div class="track-title">Creep</div>
           <div class="track-artist">Radiohead</div>
-          <audio controls preload="none" src="pascal-creep.mp3">Your browser doesn't support audio playback.</audio>
+          <audio controls preload="none" src="new-audio/CREEP.m4a">Your browser doesn't support audio playback.</audio>
         </div>
       </div>
 
@@ -583,7 +607,7 @@
         <div class="track-info">
           <div class="track-title">Dancing in the Dark</div>
           <div class="track-artist">Bruce Springsteen</div>
-          <audio controls preload="none" src="pascal-dancing-in-the-dark.mp3">Your browser doesn't support audio playback.</audio>
+          <audio controls preload="none" src="new-audio/Dancing in the Dark.mp3">Your browser doesn't support audio playback.</audio>
         </div>
       </div>
 
@@ -592,7 +616,7 @@
         <div class="track-info">
           <div class="track-title">Falling Slowly</div>
           <div class="track-artist">Glen Hansard</div>
-          <audio controls preload="none" src="pascal-falling-slowly.mp3">Your browser doesn't support audio playback.</audio>
+          <audio controls preload="none" src="new-audio/Falling Slowly.mp3">Your browser doesn't support audio playback.</audio>
         </div>
       </div>
     </div>
@@ -601,12 +625,29 @@
   <!-- VIDEO -->
   <div class="section">
     <span class="label">Video</span>
-    <h2>One live take.</h2>
-    <div class="video-wrap">
-      <video controls preload="metadata" poster="pascal-live-poster.jpg">
-        <source src="pascal-live.mp4" type="video/mp4" />
-        Your browser doesn't support HTML video.
-      </video>
+    <h2>Live takes.</h2>
+    <div class="video-grid">
+      <figure>
+        <video controls preload="metadata">
+          <source src="new-videos/All I Want is You.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>All I Want is You &mdash; U2</figcaption>
+      </figure>
+      <figure>
+        <video controls preload="metadata">
+          <source src="new-videos/Dancing in the Dark.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>Dancing in the Dark &mdash; Springsteen</figcaption>
+      </figure>
+      <figure>
+        <video controls preload="metadata">
+          <source src="new-videos/House of the RIsing Sun.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>House of the Rising Sun</figcaption>
+      </figure>
     </div>
   </div>
 
