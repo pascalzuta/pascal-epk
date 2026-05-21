@@ -74,6 +74,7 @@
 
   /* ---------- TOP BAR ---------- */
   body { padding-top: 44px; }
+  :target, [id] { scroll-margin-top: 60px; }
   .top-bar {
     position: fixed;
     top: 0;
@@ -504,7 +505,11 @@
     </div>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
-      <li><a href="/singalong/">Singalong</a></li>
+      <li><a href="/#video">Video</a></li>
+      <li><a href="/#repertoire">Repertoire</a></li>
+      <li><a href="/#photos">Photos</a></li>
+      <li><a href="/#music">Music</a></li>
+      <li><a href="/#booking">Booking</a></li>
     </ul>
     <div class="nav-footer">
       <span>Bookings</span>
@@ -524,7 +529,7 @@
   </div>
 
   <!-- BIO -->
-  <div class="section bio">
+  <div class="section bio" id="bio">
     <span class="label">Bio</span>
     <p class="fans-lead">
       The craft, the storytelling, the way a song can hit you square in the chest &mdash; that&rsquo;s the territory.
@@ -541,7 +546,7 @@
   <hr/>
 
   <!-- VIDEO -->
-  <div class="section">
+  <div class="section" id="video">
     <span class="label">Video</span>
     <h2>Live takes.</h2>
     <div class="video-grid">
@@ -579,7 +584,7 @@
   <hr/>
 
   <!-- REPERTOIRE -->
-  <div class="section bio">
+  <div class="section bio" id="repertoire">
     <span class="label">Repertoire</span>
     <h2>Some favorites.</h2>
     <div class="songs-inline">
@@ -604,7 +609,7 @@
   <hr/>
 
   <!-- PHOTOS -->
-  <div class="section">
+  <div class="section" id="photos">
     <div class="photos-full">
       <div class="photo-grid">
         <img src="new-photos/screenshot.png" alt="Pascal performing live" style="object-position: center 25%;" />
@@ -618,7 +623,7 @@
   </div>
 
   <!-- MUSIC -->
-  <div class="section">
+  <div class="section" id="music">
     <span class="label">Music</span>
     <h2>Four from the set.</h2>
     <div class="tracks">
