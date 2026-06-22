@@ -289,7 +289,8 @@
     width: 64px;
     height: 1px;
     background: rgba(255,255,255,0.6);
-    margin: clamp(14px, 3vw, 28px) 0;
+    /* name↔divider tightened; divider↔tagline grown by the same amount so the copy stays put */
+    margin: clamp(8px, 1.7vw, 16px) 0 clamp(20px, 4.3vw, 40px);
   }
   .hero-overlay .tagline {
     font-family: "EB Garamond", Georgia, serif;
