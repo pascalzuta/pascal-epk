@@ -265,13 +265,18 @@
     position: absolute;
     inset: 0;
     z-index: 1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.30), rgba(0,0,0,0.14) 40%, rgba(0,0,0,0.42));
+  }
+  .hero-text {
+    position: absolute;
+    top: 32%;
+    left: 0;
+    right: 0;
+    padding: 0 6%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 6%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.30), rgba(0,0,0,0.14) 40%, rgba(0,0,0,0.42));
   }
   .hero-overlay h1 {
     color: #fff;
@@ -497,7 +502,7 @@
     .top-bar { padding: 12px 20px; }
     .hero { aspect-ratio: auto; height: 64vh; }
     .hero img { object-position: center 22%; }
-    .hero-overlay { padding: 24px; }
+    .hero-text { top: 30%; padding: 0 24px; }
     .bio .songs-inline { columns: 1; font-size: 18px; }
     .photo-grid { grid-template-columns: 1fr; }
     .photo-grid img { aspect-ratio: 4/3; }
@@ -538,9 +543,11 @@
   <div class="hero">
     <img src="pascal-hero-bw.jpg" alt="Pascal smiling with his acoustic guitar on stage at the Sausalito Art Festival, black and white" />
     <div class="hero-overlay">
-      <h1>Pascal Zuta</h1>
-      <div class="divider"></div>
-      <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
+      <div class="hero-text">
+        <h1>Pascal Zuta</h1>
+        <div class="divider"></div>
+        <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
+      </div>
     </div>
   </div>
 
