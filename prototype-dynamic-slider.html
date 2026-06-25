@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pascal — Solo Acoustic · Live · [Prototype: Dynamic + Hero Slider]</title>
+<meta name="description" content="Solo acoustic. Songs people know, played like they mean it. Available for pub and intimate venue bookings." />
+<link rel="icon" href="favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /*
+    DESIGN SYSTEM
+    Fonts:    EB Garamond 400/500 (headings, editorial), Inter 400/500 (body, labels)
+    Colors:   --ink (text), --mute (secondary), --accent (red), --bg, --rule
+    Sizes:    11px labels · 16px body · 20px featured · 32px h2 · display h1
+  */
+  :root {
+    --bg: #f4efe6;
+    --ink: #1a1714;
+    --mute: #8a8175;
+    --rule: #d8cfbd;
+    --accent: #b23a1f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 72px 40px;
+  }
+
+  /* ---------- TYPOGRAPHY ---------- */
+  h1, h2 { font-family: "EB Garamond", Georgia, serif; font-weight: 400; color: var(--ink); }
+  h1 {
+    font-size: clamp(64px, 12vw, 120px);
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-size: clamp(26px, 3.2vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .label {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mute);
+    display: block;
+    margin-bottom: 14px;
+  }
+  p { color: var(--ink); margin-bottom: 16px; }
+
+  a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--accent); }
+
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+
+  /* ---------- TOP BAR ---------- */
+  body { padding-top: 44px; }
+  :target, [id] { scroll-margin-top: 60px; }
+  .top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: var(--bg);
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 16px;
+  }
+  .top-bar .label {
+    grid-column: 2;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* ---------- NAV (HAMBURGER) ---------- */
+  .nav-toggle {
+    grid-column: 3;
+    justify-self: end;
+    width: 22px;
+    height: 16px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--ink);
+  }
+  .topbar-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .topbar-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  .nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(26, 23, 20, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  .nav-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .nav-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 61;
+    width: min(380px, 100vw);
+    background: var(--bg);
+    border-left: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: -12px 0 32px rgba(26, 23, 20, 0.08);
+  }
+  .nav-panel.open { transform: translateX(0); }
+
+  .nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-header-label {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  .nav-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    font-size: 22px;
+    line-height: 1;
+    transition: color .2s ease;
+  }
+  .nav-close:hover { color: var(--accent); }
+
+  .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+  }
+  .nav-links li { border-bottom: 1px solid var(--rule); }
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    font-family: "EB Garamond", serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color .2s ease, padding-left .2s ease, background .2s ease;
+  }
+  .nav-links a::after {
+    content: "→";
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .nav-links a:hover {
+    color: var(--accent);
+    padding-left: 36px;
+    background: rgba(178, 58, 31, 0.04);
+  }
+  .nav-links a:hover::after { opacity: 1; transform: translateX(0); }
+
+  .nav-footer {
+    padding: 24px 28px;
+    border-top: 1px solid var(--rule);
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: var(--mute);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nav-footer span {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .nav-footer a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    align-self: flex-start;
+    transition: border-color .2s ease, color .2s ease;
+  }
+  .nav-footer a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- HERO (name + tagline overlay · Variation 2 · centered) ---------- */
+  .hero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    display: flex;
+  }
+  .hero img, .hero video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.08) 24%, rgba(0,0,0,0.40) 58%, rgba(0,0,0,0.55) 100%);
+  }
+  .hero-text {
+    position: absolute;
+    top: 42%;
+    left: 0;
+    right: 0;
+    padding: 0 6%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hero-overlay h1 {
+    color: #fff;
+    font-size: clamp(40px, 9.6vw, 104px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+  }
+  .hero-overlay .divider {
+    width: 64px;
+    height: 1px;
+    background: rgba(255,255,255,0.6);
+    /* equal above/below, ~30% tighter than before */
+    margin: clamp(10px, 2.1vw, 20px) 0;
+  }
+  .hero-overlay .tagline {
+    font-family: "EB Garamond", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(20px, 3.9vw, 33px);
+    line-height: 1.35;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 1px 16px rgba(0,0,0,0.55);
+    max-width: 26ch;
+  }
+
+  /* ---------- BIO ---------- */
+  .bio .fans-lead {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(22px, 3vw, 28px);
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .bio .fans-lead strong {
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .bio p.bio-text {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(20px, 2.4vw, 24px);
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .bio .fans {
+    font-size: 15px;
+    color: var(--mute);
+    line-height: 1.9;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .bio .repertoire-intro {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--mute);
+    margin-top: 32px;
+    margin-bottom: 16px;
+  }
+  .bio .songs-inline {
+    columns: 2;
+    column-gap: 40px;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+  .bio .songs-inline .song { break-inside: avoid; display: block; }
+  .bio .songs-inline .song em { color: var(--mute); font-style: italic; }
+  .bio .songs-note {
+    font-size: 13px;
+    color: var(--mute);
+    margin-top: 16px;
+  }
+
+  /* ---------- PHOTOS ---------- */
+  .photos-full {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  .photo-grid img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+  }
+
+  /* ---------- TRACKS ---------- */
+  .tracks { margin-top: 24px; }
+  .track {
+    border-top: 1px solid var(--rule);
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0 16px;
+    align-items: start;
+  }
+  .track:last-child { border-bottom: 1px solid var(--rule); }
+  .track-num {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--mute);
+    padding-top: 3px;
+  }
+  .track-title {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .track-artist {
+    font-size: 13px;
+    color: var(--mute);
+    margin-top: 2px;
+  }
+  .track audio {
+    width: 100%;
+    height: 36px;
+    margin-top: 12px;
+    filter: grayscale(1) contrast(0.9);
+    opacity: 0.7;
+  }
+  .track audio:hover { opacity: 1; }
+
+  /* ---------- VIDEO ---------- */
+  .video-wrap {
+    margin-top: 24px;
+    overflow: hidden;
+  }
+  .video-wrap video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--ink);
+  }
+  .video-grid {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .video-grid figure {
+    margin: 0;
+  }
+  .video-grid video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--ink);
+  }
+  .video-grid figcaption {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: var(--ink);
+    opacity: 0.8;
+  }
+  @media (max-width: 720px) {
+    .video-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- SONGS ---------- */
+  .songs {
+    columns: 2;
+    column-gap: 48px;
+    margin-top: 24px;
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 16px;
+    line-height: 2;
+    color: var(--ink);
+  }
+  .songs .song { break-inside: avoid; display: block; }
+  .songs .song em { color: var(--mute); font-style: italic; }
+
+  /* ---------- BOOKING ---------- */
+  .booking {
+    text-align: center;
+    padding: 72px 40px 96px;
+  }
+  .booking .contact {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.5;
+  }
+  .booking .contact a {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .booking .contact a:hover { border-color: var(--accent); }
+  .booking .location {
+    color: var(--mute);
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .meta {
+    margin-top: 56px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mute);
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+
+  /* ---------- TRANSITIONS ---------- */
+  a, .track audio { transition: all 0.2s ease; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 640px) {
+    .section { padding: 48px 24px; }
+    .top-bar { padding: 12px 20px; }
+    .hero { aspect-ratio: auto; height: 64vh; }
+    .hero img { object-position: center 22%; }
+    .hero-text { top: 40%; padding: 0 24px; }
+    .bio .songs-inline { columns: 1; font-size: 18px; }
+    .photo-grid { grid-template-columns: 1fr; }
+    .photo-grid img { aspect-ratio: 4/3; }
+    .booking { padding: 48px 24px 64px; }
+  }
+
+  /* ===== DYNAMIC PROTOTYPE · motion layer ===== */
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--accent); z-index: 100; transition: width .08s linear; }
+
+  /* hero: slow zoom + animated headline */
+  .hero video, .hero img { animation: kenburns 24s ease-out forwards; }
+  @keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.14); } }
+  .hero-overlay h1 .ch { display: inline-block; opacity: 0; transform: translateY(24px); animation: chIn .62s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes chIn { to { opacity: 1; transform: none; } }
+  .hero .divider, .hero .tagline { opacity: 0; animation: fadeUp .8s ease forwards; }
+  .hero .divider { animation-delay: .6s; } .hero .tagline { animation-delay: .78s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* hover micro-interactions */
+  .photo-grid img { transition: transform .5s cubic-bezier(.4,0,.2,1), filter .5s ease; filter: grayscale(.25); }
+  .photo-grid img:hover { transform: scale(1.04); filter: none; }
+  .video-grid figure { transition: transform .4s cubic-bezier(.4,0,.2,1); }
+  .video-grid figure:hover { transform: translateY(-6px); }
+  .track { transition: padding-left .3s ease; }
+  .track:hover { padding-left: 8px; }
+  .photo-grid img:hover, .video-grid figure:hover { transition-delay: 0s; }
+
+  /* repertoire marquee */
+  .songs-inline.marquee { columns: auto !important; display: block; overflow: hidden; position: relative;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .marquee-row { display: flex; gap: 40px; width: max-content; white-space: nowrap; will-change: transform; }
+  .marquee-row + .marquee-row { margin-top: 4px; }
+  .marquee-row .song { display: inline-block; }
+  .marquee-row.r1 { animation: mqL 38s linear infinite; }
+  .marquee-row.r2 { animation: mqR 44s linear infinite; }
+  @keyframes mqL { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes mqR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  .songs-inline.marquee:hover .marquee-row { animation-play-state: paused; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero video, .hero img, .hero-overlay h1 .ch, .hero .divider, .hero .tagline { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .marquee-row { animation: none !important; }
+  }
+
+  /* ===== HERO SLIDER ===== */
+  .hero-slider { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .hero-track { display: flex; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.4,0,.2,1); }
+  .hero-slide { flex: 0 0 100%; width: 100%; height: 100%; position: relative; overflow: hidden; background: #14110f; }
+  .hero-slide video, .hero-slide img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 22%; display: block;
+    animation: none !important;  /* no ken-burns inside the slider */
+  }
+  .hero-overlay { z-index: 2; pointer-events: none; }  /* gradient + text above slides; let drags pass through */
+  .hero-arrow {
+    position: absolute; top: 42%; transform: translateY(-50%); z-index: 4;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.28);
+    color: #fff; font-family: "EB Garamond", serif; font-size: 26px; line-height: 1;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    transition: background .2s ease, border-color .2s ease, opacity .2s ease;
+  }
+  .hero-arrow:hover { background: rgba(0,0,0,0.5); border-color: #fff; }
+  .hero-arrow.prev { left: 18px; } .hero-arrow.next { right: 18px; }
+  .hero-dots { position: absolute; bottom: 16px; left: 0; right: 0; z-index: 4; display: flex; gap: 9px; justify-content: center; }
+  .hero-dot { width: 9px; height: 9px; border-radius: 50%; border: none; padding: 0; cursor: pointer; background: rgba(255,255,255,0.45); transition: background .2s ease, transform .2s ease; }
+  .hero-dot.active { background: #fff; transform: scale(1.25); }
+  .hero { cursor: grab; } .hero.dragging { cursor: grabbing; }
+  @media (max-width: 640px) {
+    .hero-arrow { width: 38px; height: 38px; font-size: 22px; }
+    .hero-arrow.prev { left: 10px; } .hero-arrow.next { right: 10px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <span class="label" style="margin-bottom:0; color: var(--ink);">Solo Acoustic · <a href="#booking" class="topbar-link">Available for booking</a></span>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+  <aside class="nav-panel" id="navPanel" aria-hidden="true" role="dialog" aria-label="Navigation">
+    <div class="nav-header">
+      <span class="nav-header-label">Menu</span>
+      <button class="nav-close" id="navClose" aria-label="Close menu">&times;</button>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#video">Video</a></li>
+      <li><a href="/#repertoire">Repertoire</a></li>
+      <li><a href="/#photos">Photos</a></li>
+      <li><a href="/#music">Music</a></li>
+      <li><a href="/#booking">Booking</a></li>
+    </ul>
+    <div class="nav-footer">
+      <span>Bookings</span>
+      <a href="mailto:pascal.zuta@gmail.com">pascal.zuta@gmail.com</a>
+    </div>
+  </aside>
+
+  <!-- HERO (slider: video · photo · video) + name + tagline overlay -->
+  <div class="hero">
+    <div class="hero-slider">
+      <div class="hero-track" id="heroTrack">
+        <div class="hero-slide">
+          <video muted loop playsinline preload="metadata" poster="dancing-poster.jpg">
+            <source src="new-videos/Dancing in the Dark.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="hero-slide">
+          <img src="pascal-hero-bw.jpg" alt="Pascal smiling with his acoustic guitar, black and white" />
+        </div>
+        <div class="hero-slide">
+          <video muted loop playsinline preload="metadata" poster="wild-poster.jpg">
+            <source src="new-videos/Wild World.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+    <div class="hero-overlay">
+      <div class="hero-text">
+        <h1>Pascal Zuta</h1>
+        <div class="divider"></div>
+        <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
+      </div>
+    </div>
+    <button class="hero-arrow prev" id="heroPrev" aria-label="Previous slide">&#8249;</button>
+    <button class="hero-arrow next" id="heroNext" aria-label="Next slide">&#8250;</button>
+    <div class="hero-dots" id="heroDots"></div>
+  </div>
+
+  <!-- BIO -->
+  <div class="section bio" id="bio">
+    <span class="label">Bio</span>
+    <p class="bio-text">
+      A Marin County solo act on acoustic guitar. Covers and originals, chosen because there&rsquo;s something real in them worth hearing again &mdash; something that comes straight from the heart.
+    </p>
+  </div>
+
+  <hr/>
+
+  <!-- VIDEO -->
+  <div class="section" id="video">
+    <span class="label">Video</span>
+    <h2>Live takes.</h2>
+    <div class="video-grid">
+      <figure>
+        <video controls preload="metadata" poster="new-videos/riptide-poster.jpg">
+          <source src="new-videos/Riptide.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>Riptide &mdash; Vance Joy</figcaption>
+      </figure>
+      <figure>
+        <video controls preload="metadata" poster="new-videos/allwant-poster.jpg">
+          <source src="new-videos/All I Want is You.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>All I Want is You &mdash; U2</figcaption>
+      </figure>
+      <figure>
+        <video controls preload="metadata" poster="new-videos/dancing-poster.jpg">
+          <source src="new-videos/Dancing in the Dark.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>Dancing in the Dark &mdash; Springsteen</figcaption>
+      </figure>
+      <figure>
+        <video controls preload="metadata" poster="new-videos/wild-poster.jpg">
+          <source src="new-videos/Wild World.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>Wild World &mdash; Cat Stevens</figcaption>
+      </figure>
+      <figure>
+        <video controls preload="metadata" poster="new-videos/house-poster.jpg">
+          <source src="new-videos/House of the RIsing Sun.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>House of the Rising Sun &mdash; The Animals</figcaption>
+      </figure>
+      <figure>
+        <video controls preload="metadata" poster="new-videos/forever-poster.jpg">
+          <source src="new-videos/Forever.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>Forever &mdash; Mumford and Sons</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- REPERTOIRE -->
+  <div class="section bio" id="repertoire">
+    <span class="label">Repertoire</span>
+    <h2>Songs your crowd will know.</h2>
+    <div class="songs-inline">
+      <span class="song">Forever <em>&mdash; Mumford and Sons</em></span>
+      <span class="song">Wild World <em>&mdash; Cat Stevens</em></span>
+      <span class="song">Yellow <em>&mdash; Coldplay</em></span>
+      <span class="song">The Door <em>&mdash; Teddy Swims</em></span>
+      <span class="song">Dancing in the Dark <em>&mdash; Springsteen</em></span>
+      <span class="song">Fast Car <em>&mdash; Tracy Chapman</em></span>
+      <span class="song">Creep <em>&mdash; Radiohead</em></span>
+      <span class="song">Take Me to Church <em>&mdash; Hozier</em></span>
+      <span class="song">True Colors <em>&mdash; Cyndi Lauper</em></span>
+      <span class="song">The Fate of Ophelia <em>&mdash; Taylor Swift</em></span>
+      <span class="song">Is This Love <em>&mdash; Bob Marley</em></span>
+      <span class="song">Good Riddance <em>&mdash; Green Day</em></span>
+      <span class="song">Don&rsquo;t Look Back in Anger <em>&mdash; Oasis</em></span>
+    </div>
+    <p class="songs-note">Full list on request.</p>
+  </div>
+
+  <hr/>
+
+  <!-- PHOTOS -->
+  <div class="section" id="photos">
+    <div class="photos-full">
+      <div class="photo-grid">
+        <img src="new-photos/screenshot.png" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/nonamebar-09.jpg" alt="Pascal with his acoustic guitar at the No Name Bar" style="object-position: center 22%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_04.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_08.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/nonamebar-03.jpg" alt="Pascal singing into the microphone at the No Name Bar" style="object-position: 40% 20%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_07.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- MUSIC -->
+  <div class="section" id="music">
+    <span class="label">Music</span>
+    <h2>Four from the set.</h2>
+    <div class="tracks">
+      <div class="track">
+        <span class="track-num">01</span>
+        <div class="track-info">
+          <div class="track-title">The Trail</div>
+          <div class="track-artist">Original</div>
+          <audio controls preload="none" src="pascal-the-trail.mp3">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
+
+      <div class="track">
+        <span class="track-num">02</span>
+        <div class="track-info">
+          <div class="track-title">Creep</div>
+          <div class="track-artist">Radiohead</div>
+          <audio controls preload="none" src="new-audio/CREEP.m4a">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
+
+      <div class="track">
+        <span class="track-num">03</span>
+        <div class="track-info">
+          <div class="track-title">Dancing in the Dark</div>
+          <div class="track-artist">Bruce Springsteen</div>
+          <audio controls preload="none" src="new-audio/Dancing in the Dark.mp3">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
+
+      <div class="track">
+        <span class="track-num">04</span>
+        <div class="track-info">
+          <div class="track-title">Falling Slowly</div>
+          <div class="track-artist">Glen Hansard</div>
+          <audio controls preload="none" src="new-audio/Falling Slowly.mp3">Your browser doesn't support audio playback.</audio>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- BOOKING -->
+  <div class="booking" id="booking">
+    <span class="label">Booking</span>
+    <h2>Get in touch.</h2>
+    <p class="contact">
+      <a href="mailto:pascal.zuta@gmail.com">pascal.zuta@gmail.com</a>
+    </p>
+    <p class="location">Marin County, California</p>
+    <div class="meta">
+      <span>Pascal · Live</span>
+      <span>EPK · 2026</span>
+    </div>
+  </div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('navToggle');
+    var panel = document.getElementById('navPanel');
+    var backdrop = document.getElementById('navBackdrop');
+    var closeBtn = document.getElementById('navClose');
+    function open() {
+      panel.classList.add('open');
+      backdrop.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      panel.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      panel.classList.remove('open');
+      backdrop.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    btn.addEventListener('click', function () {
+      panel.classList.contains('open') ? close() : open();
+    });
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+<script>
+  /* ===== DYNAMIC PROTOTYPE · motion behaviors ===== */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // scroll progress bar + hero parallax
+    var bar = document.getElementById('scrollProgress');
+    var heroText = document.querySelector('.hero-text');
+    function onScroll() {
+      var h = document.documentElement;
+      var sc = h.scrollTop || document.body.scrollTop;
+      var max = h.scrollHeight - h.clientHeight;
+      if (bar) bar.style.width = (max > 0 ? (sc / max * 100) : 0) + '%';
+      if (heroText && !reduce) {
+        heroText.style.transform = 'translateY(' + (sc * 0.25) + 'px)';
+        heroText.style.opacity = Math.max(0, 1 - sc / 420);
+      }
+    }
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // hero headline: split into animated letters
+    var h1 = document.querySelector('.hero-overlay h1');
+    if (h1 && !reduce) {
+      var txt = h1.textContent;
+      h1.textContent = '';
+      txt.split('').forEach(function (c, i) {
+        var s = document.createElement('span');
+        s.className = 'ch';
+        s.textContent = (c === ' ' ? ' ' : c);
+        s.style.animationDelay = (0.15 + i * 0.045) + 's';
+        h1.appendChild(s);
+      });
+    }
+
+    // scroll-reveal
+    var sel = '.section .label, .section h2, .section .bio-text, .track, .video-grid figure, .photo-grid img, .booking .contact, .booking .location, .songs-note';
+    var items = [].slice.call(document.querySelectorAll(sel));
+    if ('IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      items.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+      ['.video-grid figure', '.photo-grid img'].forEach(function (s) {
+        document.querySelectorAll(s).forEach(function (el, i) { el.style.transitionDelay = (i * 0.06) + 's'; });
+      });
+      document.querySelectorAll('.track').forEach(function (el, i) { el.style.transitionDelay = (i * 0.05) + 's'; });
+    }
+
+    // (repertoire marquee removed — keep the static list)
+  })();
+</script>
+<script>
+  /* ===== HERO SLIDER ===== */
+  (function () {
+    var hero = document.querySelector('.hero');
+    var track = document.getElementById('heroTrack');
+    var dotsWrap = document.getElementById('heroDots');
+    if (!hero || !track) return;
+    var slides = [].slice.call(track.children);
+    var n = slides.length, i = 0;
+
+    var dots = slides.map(function (_, k) {
+      var b = document.createElement('button');
+      b.className = 'hero-dot' + (k === 0 ? ' active' : '');
+      b.setAttribute('aria-label', 'Go to slide ' + (k + 1));
+      b.addEventListener('click', function () { go(k); });
+      dotsWrap.appendChild(b);
+      return b;
+    });
+
+    function playCurrent() {
+      slides.forEach(function (s, k) {
+        var v = s.querySelector('video');
+        if (!v) return;
+        if (k === i) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else { try { v.pause(); } catch (e) {} }
+      });
+    }
+    function go(k) {
+      i = (k + n) % n;
+      track.style.transform = 'translateX(' + (-i * 100) + '%)';
+      dots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
+      playCurrent();
+    }
+
+    document.getElementById('heroPrev').addEventListener('click', function () { go(i - 1); });
+    document.getElementById('heroNext').addEventListener('click', function () { go(i + 1); });
+
+    hero.setAttribute('tabindex', '0');
+    hero.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') go(i - 1);
+      else if (e.key === 'ArrowRight') go(i + 1);
+    });
+
+    // drag / swipe
+    var x0 = null, dx = 0, dragging = false;
+    function start(x) { x0 = x; dx = 0; dragging = true; track.style.transition = 'none'; hero.classList.add('dragging'); }
+    function move(x) { if (!dragging) return; dx = x - x0; track.style.transform = 'translateX(calc(' + (-i * 100) + '% + ' + dx + 'px))'; }
+    function end() {
+      if (!dragging) return;
+      dragging = false; hero.classList.remove('dragging'); track.style.transition = '';
+      if (Math.abs(dx) > 55) go(i + (dx < 0 ? 1 : -1)); else go(i);
+      x0 = null; dx = 0;
+    }
+    hero.addEventListener('touchstart', function (e) { start(e.touches[0].clientX); }, { passive: true });
+    hero.addEventListener('touchmove', function (e) { move(e.touches[0].clientX); }, { passive: true });
+    hero.addEventListener('touchend', end);
+    hero.addEventListener('mousedown', function (e) { if (e.target.closest('.hero-arrow,.hero-dot')) return; start(e.clientX); e.preventDefault(); });
+    window.addEventListener('mousemove', function (e) { if (dragging) move(e.clientX); });
+    window.addEventListener('mouseup', end);
+
+    playCurrent();
+  })();
+</script>
+</body>
+</html>
