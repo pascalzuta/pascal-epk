@@ -578,6 +578,7 @@
     transition: background .2s ease, border-color .2s ease, opacity .2s ease;
   }
   .hero-arrow:hover { background: rgba(0,0,0,0.5); border-color: #fff; }
+  .hero-arrow svg { display: block; }
   .hero-arrow.prev { left: 18px; } .hero-arrow.next { right: 18px; }
   .hero-dots { position: absolute; bottom: 16px; left: 0; right: 0; z-index: 4; display: flex; gap: 9px; justify-content: center; }
   .hero-dot { width: 9px; height: 9px; border-radius: 50%; border: none; padding: 0; cursor: pointer; background: rgba(255,255,255,0.45); transition: background .2s ease, transform .2s ease; }
@@ -649,8 +650,8 @@
         <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
       </div>
     </div>
-    <button class="hero-arrow prev" id="heroPrev" aria-label="Previous slide">&#8249;</button>
-    <button class="hero-arrow next" id="heroNext" aria-label="Next slide">&#8250;</button>
+    <button class="hero-arrow prev" id="heroPrev" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"></polyline></svg></button>
+    <button class="hero-arrow next" id="heroNext" aria-label="Next slide"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 5 16 12 9 19"></polyline></svg></button>
     <div class="hero-dots" id="heroDots"></div>
   </div>
 
