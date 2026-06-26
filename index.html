@@ -257,7 +257,7 @@
     overflow: hidden;
     display: flex;
   }
-  .hero img {
+  .hero img, .hero video {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -513,9 +513,86 @@
     .photo-grid img { aspect-ratio: 4/3; }
     .booking { padding: 48px 24px 64px; }
   }
+
+  /* ===== DYNAMIC PROTOTYPE · motion layer ===== */
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--accent); z-index: 100; transition: width .08s linear; }
+
+  /* hero: slow zoom + animated headline */
+  .hero video, .hero img { animation: kenburns 24s ease-out forwards; }
+  @keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.14); } }
+  .hero-overlay h1 .ch { display: inline-block; opacity: 0; transform: translateY(24px); animation: chIn .62s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes chIn { to { opacity: 1; transform: none; } }
+  .hero .divider, .hero .tagline { opacity: 0; animation: fadeUp .8s ease forwards; }
+  .hero .divider { animation-delay: .6s; } .hero .tagline { animation-delay: .78s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* hover micro-interactions */
+  .photo-grid img { transition: filter .5s ease; filter: grayscale(.25); }
+  .photo-grid img:hover { filter: none; }
+  .video-grid figure { transition: transform .4s cubic-bezier(.4,0,.2,1); }
+  .video-grid figure:hover { transform: translateY(-6px); }
+  .track { transition: padding-left .3s ease; }
+  .track:hover { padding-left: 8px; }
+  .photo-grid img:hover, .video-grid figure:hover { transition-delay: 0s; }
+
+  /* repertoire marquee */
+  .songs-inline.marquee { columns: auto !important; display: block; overflow: hidden; position: relative;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .marquee-row { display: flex; gap: 40px; width: max-content; white-space: nowrap; will-change: transform; }
+  .marquee-row + .marquee-row { margin-top: 4px; }
+  .marquee-row .song { display: inline-block; }
+  .marquee-row.r1 { animation: mqL 38s linear infinite; }
+  .marquee-row.r2 { animation: mqR 44s linear infinite; }
+  @keyframes mqL { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes mqR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  .songs-inline.marquee:hover .marquee-row { animation-play-state: paused; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero video, .hero img, .hero-overlay h1 .ch, .hero .divider, .hero .tagline { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .marquee-row { animation: none !important; }
+  }
+
+  /* ===== HERO SLIDER ===== */
+  .hero-slider { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .hero-track { display: flex; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.4,0,.2,1); }
+  .hero-slide { flex: 0 0 100%; width: 100%; height: 100%; position: relative; overflow: hidden; background: #14110f; }
+  .hero-slide video, .hero-slide img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 22%; display: block;
+    animation: none !important;  /* no ken-burns inside the slider */
+  }
+  .hero-overlay { z-index: 2; pointer-events: none; }  /* gradient + text above slides; let drags pass through */
+  .hero-arrow {
+    position: absolute; top: 42%; transform: translateY(-50%); z-index: 4;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.28);
+    color: #fff; font-family: "EB Garamond", serif; font-size: 26px; line-height: 1;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    transition: background .2s ease, border-color .2s ease, opacity .2s ease;
+  }
+  .hero-arrow:hover { background: rgba(0,0,0,0.5); border-color: #fff; }
+  .hero-arrow svg { display: block; }
+  .hero-arrow.prev { left: 18px; } .hero-arrow.next { right: 18px; }
+  .hero-dots { position: absolute; bottom: 16px; left: 0; right: 0; z-index: 4; display: flex; gap: 9px; justify-content: center; }
+  .hero-dot { width: 9px; height: 9px; border-radius: 50%; border: none; padding: 0; cursor: pointer; background: rgba(255,255,255,0.45); transition: background .2s ease, transform .2s ease; }
+  .hero-dot.active { background: #fff; transform: scale(1.25); }
+  .hero { cursor: grab; } .hero.dragging { cursor: grabbing; }
+  @media (max-width: 640px) {
+    .hero-arrow { width: 38px; height: 38px; font-size: 22px; }
+    .hero-arrow.prev { left: 10px; } .hero-arrow.next { right: 10px; }
+  }
 </style>
 </head>
 <body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
 
   <!-- TOP BAR -->
   <div class="top-bar">
@@ -544,9 +621,28 @@
     </div>
   </aside>
 
-  <!-- HERO (name + tagline overlay) -->
+  <!-- HERO (slider: video · photo · video) + name + tagline overlay -->
   <div class="hero">
-    <img src="pascal-hero-bw.jpg" alt="Pascal smiling with his acoustic guitar on stage at the Sausalito Art Festival, black and white" />
+    <div class="hero-slider">
+      <div class="hero-track" id="heroTrack">
+        <div class="hero-slide">
+          <img src="pascal-hero-bw.jpg" alt="Pascal smiling with his acoustic guitar, black and white" />
+        </div>
+        <div class="hero-slide">
+          <video muted playsinline preload="auto" poster="dancing-poster.jpg">
+            <source src="new-videos/Dancing in the Dark.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="hero-slide">
+          <img src="new-photos/nonamebar-09.jpg" alt="Pascal with his acoustic guitar at the No Name Bar" />
+        </div>
+        <div class="hero-slide">
+          <video muted playsinline preload="metadata" poster="wild-poster.jpg">
+            <source src="new-videos/Wild World.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
     <div class="hero-overlay">
       <div class="hero-text">
         <h1>Pascal Zuta</h1>
@@ -554,6 +650,9 @@
         <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
       </div>
     </div>
+    <button class="hero-arrow prev" id="heroPrev" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"></polyline></svg></button>
+    <button class="hero-arrow next" id="heroNext" aria-label="Next slide"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 5 16 12 9 19"></polyline></svg></button>
+    <div class="hero-dots" id="heroDots"></div>
   </div>
 
   <!-- BIO -->
@@ -743,6 +842,160 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') close();
     });
+  })();
+</script>
+<script>
+  /* ===== DYNAMIC PROTOTYPE · motion behaviors ===== */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // scroll progress bar + hero parallax
+    var bar = document.getElementById('scrollProgress');
+    var heroText = document.querySelector('.hero-text');
+    function onScroll() {
+      var h = document.documentElement;
+      var sc = h.scrollTop || document.body.scrollTop;
+      var max = h.scrollHeight - h.clientHeight;
+      if (bar) bar.style.width = (max > 0 ? (sc / max * 100) : 0) + '%';
+      if (heroText && !reduce) {
+        heroText.style.transform = 'translateY(' + (sc * 0.25) + 'px)';
+        heroText.style.opacity = Math.max(0, 1 - sc / 420);
+      }
+    }
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // hero headline: split into animated letters
+    var h1 = document.querySelector('.hero-overlay h1');
+    if (h1 && !reduce) {
+      var txt = h1.textContent;
+      h1.textContent = '';
+      txt.split('').forEach(function (c, i) {
+        var s = document.createElement('span');
+        s.className = 'ch';
+        s.textContent = (c === ' ' ? ' ' : c);
+        s.style.animationDelay = (0.15 + i * 0.045) + 's';
+        h1.appendChild(s);
+      });
+    }
+
+    // scroll-reveal
+    var sel = '.section .label, .section h2, .section .bio-text, .track, .video-grid figure, .photo-grid img, .booking .contact, .booking .location, .songs-note';
+    var items = [].slice.call(document.querySelectorAll(sel));
+    if ('IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      items.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+      ['.video-grid figure', '.photo-grid img'].forEach(function (s) {
+        document.querySelectorAll(s).forEach(function (el, i) { el.style.transitionDelay = (i * 0.06) + 's'; });
+      });
+      document.querySelectorAll('.track').forEach(function (el, i) { el.style.transitionDelay = (i * 0.05) + 's'; });
+    }
+
+    // (repertoire marquee removed — keep the static list)
+  })();
+</script>
+<script>
+  /* ===== HERO SLIDER (auto-sequence until first interaction) ===== */
+  (function () {
+    var hero = document.querySelector('.hero');
+    var track = document.getElementById('heroTrack');
+    var dotsWrap = document.getElementById('heroDots');
+    if (!hero || !track) return;
+    var slides = [].slice.call(track.children);
+    var n = slides.length, i = 0;
+    var auto = true, timer = null;
+    var PHOTO_DELAY = 4000; // ms to linger on a photo before auto-advancing
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { auto = false; }
+
+    var dots = slides.map(function (_, k) {
+      var b = document.createElement('button');
+      b.className = 'hero-dot' + (k === 0 ? ' active' : '');
+      b.setAttribute('aria-label', 'Go to slide ' + (k + 1));
+      b.addEventListener('click', function () { stopAuto(); go(k); });
+      dotsWrap.appendChild(b);
+      return b;
+    });
+
+    function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
+
+    // first user interaction ends the auto-sequence and lets every clip loop
+    function stopAuto() {
+      clearTimer();
+      if (!auto) return;
+      auto = false;
+      slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; });
+    }
+    if (reduce) { slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; }); }
+
+    function playOnly(idx) {
+      slides.forEach(function (s, k) {
+        var v = s.querySelector('video'); if (!v) return;
+        if (k === idx) { try { v.currentTime = 0; } catch (e) {} var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else { try { v.pause(); } catch (e) {} }
+      });
+    }
+
+    function activate() {
+      track.style.transform = 'translateX(' + (-i * 100) + '%)';
+      dots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
+      playOnly(i);
+      if (!auto) return;
+      clearTimer();
+      var vid = slides[i].querySelector('video');
+      if (!vid) timer = setTimeout(function () { if (auto) advance(); }, PHOTO_DELAY); // photo: linger then advance
+      // video: advances on its 'ended' event (handler below)
+    }
+
+    function advance() {
+      if (!auto) return;
+      if (i >= n - 1) {  // reached the final slide → end the sequence, loop the last clip
+        auto = false; clearTimer();
+        slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; });
+        var lv = slides[i].querySelector('video');
+        if (lv) { try { lv.currentTime = 0; } catch (e) {} var p = lv.play(); if (p && p.catch) p.catch(function () {}); }
+        return;
+      }
+      i += 1; activate();
+    }
+
+    function go(k) { i = (k + n) % n; activate(); }
+
+    slides.forEach(function (s) {
+      var v = s.querySelector('video');
+      if (v) v.addEventListener('ended', function () { if (auto && slides[i] === s) advance(); });
+    });
+
+    document.getElementById('heroPrev').addEventListener('click', function () { stopAuto(); go(i - 1); });
+    document.getElementById('heroNext').addEventListener('click', function () { stopAuto(); go(i + 1); });
+
+    hero.setAttribute('tabindex', '0');
+    hero.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { stopAuto(); go(i - 1); }
+      else if (e.key === 'ArrowRight') { stopAuto(); go(i + 1); }
+    });
+
+    // drag / swipe
+    var x0 = null, dx = 0, dragging = false;
+    function dstart(x) { x0 = x; dx = 0; dragging = true; track.style.transition = 'none'; hero.classList.add('dragging'); }
+    function dmove(x) { if (!dragging) return; dx = x - x0; track.style.transform = 'translateX(calc(' + (-i * 100) + '% + ' + dx + 'px))'; }
+    function dend() {
+      if (!dragging) return;
+      dragging = false; hero.classList.remove('dragging'); track.style.transition = '';
+      if (Math.abs(dx) > 55) { stopAuto(); go(i + (dx < 0 ? 1 : -1)); }
+      else { track.style.transform = 'translateX(' + (-i * 100) + '%)'; } // snap back, don't restart
+      x0 = null; dx = 0;
+    }
+    hero.addEventListener('touchstart', function (e) { dstart(e.touches[0].clientX); }, { passive: true });
+    hero.addEventListener('touchmove', function (e) { dmove(e.touches[0].clientX); }, { passive: true });
+    hero.addEventListener('touchend', dend);
+    hero.addEventListener('mousedown', function (e) { if (e.target.closest('.hero-arrow,.hero-dot')) return; dstart(e.clientX); e.preventDefault(); });
+    window.addEventListener('mousemove', function (e) { if (dragging) dmove(e.clientX); });
+    window.addEventListener('mouseup', dend);
+
+    activate(); // start on slide 0 (B&W photo); the 4s timer kicks off the sequence
   })();
 </script>
 </body>
