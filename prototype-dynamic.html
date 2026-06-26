@@ -531,8 +531,8 @@
   .reveal.in { opacity: 1; transform: none; }
 
   /* hover micro-interactions */
-  .photo-grid img { transition: transform .5s cubic-bezier(.4,0,.2,1), filter .5s ease; filter: grayscale(.25); }
-  .photo-grid img:hover { transform: scale(1.04); filter: none; }
+  .photo-grid img { transition: filter .5s ease; filter: grayscale(.25); }
+  .photo-grid img:hover { filter: none; }
   .video-grid figure { transition: transform .4s cubic-bezier(.4,0,.2,1); }
   .video-grid figure:hover { transform: translateY(-6px); }
   .track { transition: padding-left .3s ease; }
@@ -695,7 +695,7 @@
   <div class="section" id="photos">
     <div class="photos-full">
       <div class="photo-grid">
-        <img src="new-photos/screenshot.png" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/screenshot.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
         <img src="new-photos/nonamebar-09.jpg" alt="Pascal with his acoustic guitar at the No Name Bar" style="object-position: center 22%;" />
         <img src="new-photos/TP_5.5Pascal_Winters_04.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
         <img src="new-photos/TP_5.5Pascal_Winters_08.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
