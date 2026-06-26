@@ -625,15 +625,18 @@
     <div class="hero-slider">
       <div class="hero-track" id="heroTrack">
         <div class="hero-slide">
-          <video muted loop playsinline preload="metadata" poster="dancing-poster.jpg">
+          <img src="pascal-hero-bw.jpg" alt="Pascal smiling with his acoustic guitar, black and white" />
+        </div>
+        <div class="hero-slide">
+          <video muted playsinline preload="auto" poster="dancing-poster.jpg">
             <source src="new-videos/Dancing in the Dark.mp4" type="video/mp4" />
           </video>
         </div>
         <div class="hero-slide">
-          <img src="pascal-hero-bw.jpg" alt="Pascal smiling with his acoustic guitar, black and white" />
+          <img src="new-photos/nonamebar-09.jpg" alt="Pascal with his acoustic guitar at the No Name Bar" />
         </div>
         <div class="hero-slide">
-          <video muted loop playsinline preload="metadata" poster="wild-poster.jpg">
+          <video muted playsinline preload="metadata" poster="wild-poster.jpg">
             <source src="new-videos/Wild World.mp4" type="video/mp4" />
           </video>
         </div>
@@ -893,7 +896,7 @@
   })();
 </script>
 <script>
-  /* ===== HERO SLIDER ===== */
+  /* ===== HERO SLIDER (auto-sequence until first interaction) ===== */
   (function () {
     var hero = document.querySelector('.hero');
     var track = document.getElementById('heroTrack');
@@ -901,58 +904,97 @@
     if (!hero || !track) return;
     var slides = [].slice.call(track.children);
     var n = slides.length, i = 0;
+    var auto = true, timer = null;
+    var PHOTO_DELAY = 4000; // ms to linger on a photo before auto-advancing
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { auto = false; }
 
     var dots = slides.map(function (_, k) {
       var b = document.createElement('button');
       b.className = 'hero-dot' + (k === 0 ? ' active' : '');
       b.setAttribute('aria-label', 'Go to slide ' + (k + 1));
-      b.addEventListener('click', function () { go(k); });
+      b.addEventListener('click', function () { stopAuto(); go(k); });
       dotsWrap.appendChild(b);
       return b;
     });
 
-    function playCurrent() {
+    function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
+
+    // first user interaction ends the auto-sequence and lets every clip loop
+    function stopAuto() {
+      clearTimer();
+      if (!auto) return;
+      auto = false;
+      slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; });
+    }
+    if (reduce) { slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; }); }
+
+    function playOnly(idx) {
       slides.forEach(function (s, k) {
-        var v = s.querySelector('video');
-        if (!v) return;
-        if (k === i) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        var v = s.querySelector('video'); if (!v) return;
+        if (k === idx) { try { v.currentTime = 0; } catch (e) {} var p = v.play(); if (p && p.catch) p.catch(function () {}); }
         else { try { v.pause(); } catch (e) {} }
       });
     }
-    function go(k) {
-      i = (k + n) % n;
+
+    function activate() {
       track.style.transform = 'translateX(' + (-i * 100) + '%)';
       dots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
-      playCurrent();
+      playOnly(i);
+      if (!auto) return;
+      clearTimer();
+      var vid = slides[i].querySelector('video');
+      if (!vid) timer = setTimeout(function () { if (auto) advance(); }, PHOTO_DELAY); // photo: linger then advance
+      // video: advances on its 'ended' event (handler below)
     }
 
-    document.getElementById('heroPrev').addEventListener('click', function () { go(i - 1); });
-    document.getElementById('heroNext').addEventListener('click', function () { go(i + 1); });
+    function advance() {
+      if (!auto) return;
+      if (i >= n - 1) {  // reached the final slide → end the sequence, loop the last clip
+        auto = false; clearTimer();
+        slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; });
+        var lv = slides[i].querySelector('video');
+        if (lv) { try { lv.currentTime = 0; } catch (e) {} var p = lv.play(); if (p && p.catch) p.catch(function () {}); }
+        return;
+      }
+      i += 1; activate();
+    }
+
+    function go(k) { i = (k + n) % n; activate(); }
+
+    slides.forEach(function (s) {
+      var v = s.querySelector('video');
+      if (v) v.addEventListener('ended', function () { if (auto && slides[i] === s) advance(); });
+    });
+
+    document.getElementById('heroPrev').addEventListener('click', function () { stopAuto(); go(i - 1); });
+    document.getElementById('heroNext').addEventListener('click', function () { stopAuto(); go(i + 1); });
 
     hero.setAttribute('tabindex', '0');
     hero.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowLeft') go(i - 1);
-      else if (e.key === 'ArrowRight') go(i + 1);
+      if (e.key === 'ArrowLeft') { stopAuto(); go(i - 1); }
+      else if (e.key === 'ArrowRight') { stopAuto(); go(i + 1); }
     });
 
     // drag / swipe
     var x0 = null, dx = 0, dragging = false;
-    function start(x) { x0 = x; dx = 0; dragging = true; track.style.transition = 'none'; hero.classList.add('dragging'); }
-    function move(x) { if (!dragging) return; dx = x - x0; track.style.transform = 'translateX(calc(' + (-i * 100) + '% + ' + dx + 'px))'; }
-    function end() {
+    function dstart(x) { x0 = x; dx = 0; dragging = true; track.style.transition = 'none'; hero.classList.add('dragging'); }
+    function dmove(x) { if (!dragging) return; dx = x - x0; track.style.transform = 'translateX(calc(' + (-i * 100) + '% + ' + dx + 'px))'; }
+    function dend() {
       if (!dragging) return;
       dragging = false; hero.classList.remove('dragging'); track.style.transition = '';
-      if (Math.abs(dx) > 55) go(i + (dx < 0 ? 1 : -1)); else go(i);
+      if (Math.abs(dx) > 55) { stopAuto(); go(i + (dx < 0 ? 1 : -1)); }
+      else { track.style.transform = 'translateX(' + (-i * 100) + '%)'; } // snap back, don't restart
       x0 = null; dx = 0;
     }
-    hero.addEventListener('touchstart', function (e) { start(e.touches[0].clientX); }, { passive: true });
-    hero.addEventListener('touchmove', function (e) { move(e.touches[0].clientX); }, { passive: true });
-    hero.addEventListener('touchend', end);
-    hero.addEventListener('mousedown', function (e) { if (e.target.closest('.hero-arrow,.hero-dot')) return; start(e.clientX); e.preventDefault(); });
-    window.addEventListener('mousemove', function (e) { if (dragging) move(e.clientX); });
-    window.addEventListener('mouseup', end);
+    hero.addEventListener('touchstart', function (e) { dstart(e.touches[0].clientX); }, { passive: true });
+    hero.addEventListener('touchmove', function (e) { dmove(e.touches[0].clientX); }, { passive: true });
+    hero.addEventListener('touchend', dend);
+    hero.addEventListener('mousedown', function (e) { if (e.target.closest('.hero-arrow,.hero-dot')) return; dstart(e.clientX); e.preventDefault(); });
+    window.addEventListener('mousemove', function (e) { if (dragging) dmove(e.clientX); });
+    window.addEventListener('mouseup', dend);
 
-    playCurrent();
+    activate(); // start on slide 0 (B&W photo); the 4s timer kicks off the sequence
   })();
 </script>
 </body>
