@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /success.html
+Disallow: /downloads/
+
+Sitemap: https://zuta.co/nico/sitemap.xml

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Jedes Kind kann schlafen lernen – aber mit Liebe. Der sanfte Schlaf-Ratgeber von Nico Zingelmann">
+  <defs>
+    <!-- Warmer Creme-Verlauf mit dezenter Nacht-Anmutung nach unten -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#f6f1e8"/>
+      <stop offset="0.62" stop-color="#f2ece0"/>
+      <stop offset="1"   stop-color="#eae0cd"/>
+    </linearGradient>
+    <!-- Sanfter Schein hinter dem Mond -->
+    <radialGradient id="moonGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0"   stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="0.55" stop-color="#f4efe6" stop-opacity="0.5"/>
+      <stop offset="1"   stop-color="#f4efe6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Hintergrund -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Dezente Textur: feine Sternenpunkte, sehr zurückhaltend -->
+  <g fill="#5f6d54" opacity="0.14">
+    <circle cx="120"  cy="90"  r="2"/>
+    <circle cx="250"  cy="150" r="1.5"/>
+    <circle cx="70"   cy="230" r="1.5"/>
+    <circle cx="1080" cy="470" r="2"/>
+    <circle cx="1140" cy="360" r="1.5"/>
+    <circle cx="980"  cy="540" r="1.5"/>
+    <circle cx="600"  cy="70"  r="1.5"/>
+    <circle cx="430"  cy="110" r="1.5"/>
+    <circle cx="150"  cy="520" r="1.5"/>
+    <circle cx="320"  cy="560" r="2"/>
+  </g>
+
+  <!-- Salbei-Bogen unten als ruhiger Horizont-Akzent -->
+  <path d="M0 630 Q600 520 1200 630 Z" fill="#7c8a6f" opacity="0.10"/>
+
+  <!-- Mondsichel-Motiv, oben rechts, mit sanftem Schein -->
+  <g transform="translate(985,150)">
+    <circle cx="0" cy="0" r="150" fill="url(#moonGlow)"/>
+    <path d="M28 -78
+             a86 86 0 1 0 0 156
+             a66 66 0 1 1 0 -156 z"
+          fill="#e6dcc8" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- kleine Sternchen neben dem Mond -->
+    <g fill="#7c8a6f">
+      <path d="M78 -30 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4 z"/>
+      <path d="M92 22 l2.6 5.8 5.8 2.6 -5.8 2.6 -2.6 5.8 -2.6 -5.8 -5.8 -2.6 5.8 -2.6 z"/>
+    </g>
+  </g>
+
+  <!-- Textblock -->
+  <g font-family="'Fraunces','Georgia','Times New Roman',serif">
+    <!-- Kicker -->
+    <text x="90" y="215" font-size="26" letter-spacing="6"
+          fill="#7c8a6f" font-family="'Helvetica Neue',Arial,sans-serif"
+          style="text-transform:uppercase">DER SANFTE SCHLAF-RATGEBER</text>
+
+    <!-- Headline -->
+    <text x="88" y="300" font-size="76" font-weight="600" fill="#211d18">Jedes Kind kann</text>
+    <text x="88" y="378" font-size="76" font-weight="600" fill="#211d18">schlafen lernen</text>
+    <!-- Kursiver Zusatz -->
+    <text x="88" y="452" font-size="58" font-style="italic" font-weight="500" fill="#5f6d54">– aber mit Liebe</text>
+
+    <!-- Autorzeile -->
+    <text x="90" y="520" font-size="30" fill="#4a453d"
+          font-family="'Helvetica Neue',Arial,sans-serif">von Nico Zingelmann</text>
+  </g>
+</svg>
