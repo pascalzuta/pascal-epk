@@ -148,7 +148,7 @@
     right: 0;
     bottom: 0;
     z-index: 61;
-    width: min(380px, 100vw);
+    width: min(380px, 76vw);
     background: var(--bg);
     border-left: 1px solid var(--rule);
     display: flex;
@@ -839,6 +839,9 @@
     });
     closeBtn.addEventListener('click', close);
     backdrop.addEventListener('click', close);
+    panel.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', close);
+    });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') close();
     });
