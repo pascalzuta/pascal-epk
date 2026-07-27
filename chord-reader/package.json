@@ -7,7 +7,8 @@
     "songs": "node tools/pdf-to-chordpro.mjs",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "node tools/build-public.mjs"
   },
   "dependencies": {
     "chordsheetjs": "^15.6.1",

@@ -110,8 +110,9 @@ export default function App() {
 
       {USING_DEMO && !edited && (
         <p className="notice notice-small">
-          These are made-up demo songs. Run the PDF converter on your Mac and
-          rebuild to see your own.
+          These are made-up demo songs. To get your own in, open “Edit text”,
+          select everything, and paste in your songs.chordpro file. It stays on
+          this device.
         </p>
       )}
 

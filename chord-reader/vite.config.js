@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  // Relative paths, so the built app works from any folder without a server
-  // rewriting anything.
-  base: './',
+  // Relative paths by default, so your own build works from any folder. The
+  // web copy passes APP_BASE=/chords/ so it sits under zuta.co/chords.
+  base: process.env.APP_BASE ?? './',
   // host: true lets an iPad on the same wifi reach `npm run dev` on the Mac.
   server: { host: true },
   preview: { host: true },

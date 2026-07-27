@@ -105,3 +105,39 @@ While changing the app itself, `npm run dev` reloads as files are edited.
 
 Settings, setlist and hand edits are remembered on each device separately.
 There is no account and nothing is sent anywhere.
+
+## Getting it onto the iPhone and iPad
+
+iOS will only keep a web app for offline use if it came from a secure address.
+Your Mac cannot give it one over wifi, so there is a songs-free copy of the app
+published at **https://zuta.co/chords** and your songs are put in by hand on
+each device.
+
+**Nothing of yours is in that published copy.** `npm run publish` moves your
+library out of the way before building, then searches every finished file for
+your song titles and lyric lines and throws the build away if it finds any.
+
+### Putting your songs on a device
+
+1. On the Mac, open `chord-reader/library/songs.chordpro` and copy all of it.
+2. Get that text onto the device (AirDrop the file, or Notes, or email it to
+   yourself — whatever is easiest).
+3. On the device, open https://zuta.co/chords in Safari.
+4. **Share button → Add to Home Screen.** Do this before anything else.
+5. Open the app from the home screen, tap **Edit text**, select everything
+   that is there, paste yours in, and tap **Save**.
+
+**Add it to the home screen — do not just bookmark it.** Safari throws away
+stored data for ordinary web pages you have not opened in a week. Home screen
+apps are left alone. Get this wrong and your songs will vanish before a gig.
+
+The file on your Mac stays the master copy. If a device ever loses its songs,
+paste them in again.
+
+### Updating the published app
+
+    npm run publish
+
+That rewrites the `chords` folder at the top of this repository. Commit it and
+push it to `main` and the new version is live. Devices pick it up next time they
+are opened with a signal; songs already pasted in are not touched.

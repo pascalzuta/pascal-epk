@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BUILT_IN_LIBRARY } from './library.js';
+import { BUILT_IN_LIBRARY, USING_DEMO } from './library.js';
 
 // A plain text box holding the whole song file, so any song can be fixed by
 // hand on any device. Saving keeps it on this device only.
@@ -56,7 +56,9 @@ export default function EditorView({ text, edited, onSave, onRevert, onBack }) {
                 onRevert();
               }}
             >
-              Yes, go back to the file from my Mac
+              {USING_DEMO
+                ? 'Yes, go back to the demo songs'
+                : 'Yes, go back to the file from my Mac'}
             </button>
             <button className="btn btn-wide" onClick={() => setConfirmRevert(false)}>
               Cancel
