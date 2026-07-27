@@ -468,6 +468,30 @@ function main() {
   const args = process.argv.slice(2);
 
   if (args.includes('--demo')) return runDemo();
+  if (args.includes('--look-at')) {
+    const file = args[args.indexOf('--look-at') + 1];
+    if (!file) {
+      console.error('\nGive me a PDF to look at:\n    --look-at "<one file>.pdf"\n');
+      process.exit(1);
+    }
+    const reader = chooseReader();
+    console.log(`\nReading ${basename(file)} with ${reader.name}.\n`);
+    let raw;
+    try {
+      raw = reader.read(resolve(file));
+    } catch (err) {
+      console.error('That failed. The exact complaint was:\n');
+      console.error(String(err.stderr || err.message).trim() + '\n');
+      process.exit(1);
+    }
+    console.log(`It gave back ${raw.length} characters. Here are the first 40 lines:\n`);
+    console.log(raw.split('\n').slice(0, 40).join('\n'));
+    if (raw.trim() === '') {
+      console.log('\n(Nothing at all. This PDF probably has no text in it, only a picture.)');
+    }
+    console.log('');
+    return;
+  }
   if (args.length === 0 || args.includes('-h') || args.includes('--help')) return usage();
 
   const inputDir = resolve(args[0]);
@@ -497,11 +521,20 @@ function main() {
 
   const songs = [];
   const failed = [];
+  let allEmpty = true;
   for (const pdf of pdfs) {
     try {
-      const song = parseSong(reader.read(pdf), titleFromFilename(pdf));
+      const raw = reader.read(pdf);
+      if (raw.trim() === '') {
+        // Nothing at all came back. The page is a picture of a chord sheet
+        // rather than a chord sheet, so there is no text to lift out of it.
+        failed.push([basename(pdf), 'there is no text in this PDF, only a picture']);
+        continue;
+      }
+      allEmpty = false;
+      const song = parseSong(raw, titleFromFilename(pdf));
       if (!song.body) {
-        failed.push([basename(pdf), 'no text found — it may be a scan or picture']);
+        failed.push([basename(pdf), 'text was found, but no chords or lyrics in it']);
         continue;
       }
       songs.push(song);
@@ -512,7 +545,31 @@ function main() {
   }
 
   if (songs.length === 0) {
-    console.error('\nNone of the PDFs could be read, so nothing was written.\n');
+    console.error('\nNone of the PDFs could be read, so nothing was written.');
+    console.error('\nHere is what went wrong with each one:');
+    for (const [name, why] of failed) console.error(`  ${name}\n      ${why}`);
+    console.error(
+      allEmpty
+        ? [
+            '',
+            'Every one of these PDFs is a picture of a chord sheet rather than',
+            'a chord sheet. There are no letters in the file to read, only pixels,',
+            'so no tool can pull the words out of them as they are.',
+            '',
+            'The fix is to get them again as real text. In your browser, open the',
+            'song page and use File > Print > Save as PDF, rather than saving or',
+            'exporting an image. Then run this again.',
+            '',
+          ].join('\n')
+        : [
+            '',
+            'If that is the same message over and over, copy it to Claude.',
+            '',
+            'To look at just one file in detail, run:',
+            `    node ${process.argv[1]} --look-at "<one file>.pdf"`,
+            '',
+          ].join('\n')
+    );
     process.exit(1);
   }
 
