@@ -1,0 +1,22 @@
+{
+  "name": "chord-reader",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "songs": "node tools/pdf-to-chordpro.mjs",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "chordsheetjs": "^15.6.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.0",
+    "vite": "^8.1.5",
+    "vite-plugin-pwa": "^1.3.0"
+  }
+}
