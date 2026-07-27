@@ -10,6 +10,7 @@ import {
   savePrefs,
   saveSetlist,
   splitLibrary,
+  replaceSongText,
 } from './library.js';
 import SongView from './SongView.jsx';
 import SetlistView from './SetlistView.jsx';
@@ -55,6 +56,12 @@ export default function App() {
         nextTitle={nextTitle}
         onBack={() => setScreen('library')}
         onNext={() => nextTitle && open(nextTitle)}
+        onSongTextChange={(text) => {
+          const next = replaceSongText(libraryText, song.text, text);
+          saveLibraryText(next);
+          setLibraryText(next);
+          setEdited(true);
+        }}
         prefs={prefs[song.title] ?? {}}
         onPrefsChange={(p) => setPrefs({ ...prefs, [song.title]: p })}
         fontScale={fontScale}

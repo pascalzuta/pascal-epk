@@ -40,6 +40,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* the countdown is placed against this */
+  position: relative;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
     env(safe-area-inset-left);
 }
@@ -208,9 +210,16 @@ body {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  /* Lines are measured against this box when a tap moves you on one line. */
+  position: relative;
   padding: 18px 16px 0;
   font-size: var(--lyric-size);
   line-height: 1.15;
+  /* The whole sheet is the tap target, so nothing here should be selectable
+     or offer to look up a word. */
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
 }
 
 .sheet-end {
@@ -279,6 +288,64 @@ body {
   color: var(--dim);
   font-size: 0.7em;
   font-weight: 700;
+}
+
+/* --- playing --------------------------------------------------------------- */
+
+/* Kept in the corner, well away from the tapping area. */
+.btn-pause {
+  flex: none;
+  font-size: 0.95rem;
+  padding: 12px;
+  min-width: 52px;
+}
+
+.keyline-clock {
+  margin-left: auto;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.keyline-speed {
+  color: var(--chord);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The count before it starts moving, big enough to catch out of the corner of
+   your eye and see-through so it never hides a word. */
+.countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28vh;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--chord);
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.playbar {
+  flex: none;
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--edge);
+}
+
+/* Big enough to hit without looking. */
+.btn-play {
+  flex: 1;
+  min-height: 68px;
+  font-size: 1.3rem;
+}
+
+.btn-middle {
+  flex: none;
+  min-width: 116px;
+  min-height: 68px;
+  font-size: 1.1rem;
 }
 
 /* --- lists ----------------------------------------------------------------- */

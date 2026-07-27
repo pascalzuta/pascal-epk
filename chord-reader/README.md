@@ -3,8 +3,7 @@
 A private chord sheet reader for live guitar playing. Nothing here has anything
 to do with the EPK website in the rest of this repository.
 
-Being built in three steps. **Steps 1 and 2 are done.** Step 3 (the scrolling)
-is not started yet.
+All three steps are done: converting the PDFs, the reader, and the scrolling.
 
 ## Step 1 — turning your PDFs into one song file
 
@@ -105,6 +104,46 @@ While changing the app itself, `npm run dev` reloads as files are edited.
 
 Settings, setlist and hand edits are remembered on each device separately.
 There is no account and nothing is sent anywhere.
+
+## Step 3 — the scrolling
+
+Every song has two numbers, both under **Setup**:
+
+- **Length** — how long the song runs, in minutes and seconds.
+- **Start delay** — quiet seconds before the page starts moving.
+
+A song you have never touched is three minutes with a five second delay, so it
+works straight away.
+
+Both are written into the song itself, as `{duration: 3:00}` and
+`{start_delay: 5}`. That means they travel in your song file to every device
+rather than being stuck on one, and you can see and change them in **Edit text**
+like anything else.
+
+### Playing
+
+Press **Start**. Nothing moves for the delay — a large faint number counts it
+down — and then the page creeps down at one steady speed, worked out so the last
+line arrives exactly as the length runs out. It is a fraction of a pixel per
+frame, so it slides rather than jumping line to line.
+
+The controls are all one tap, and none of them need looking at:
+
+- **Tap anywhere on the words** — moves on exactly one line and carries on from
+  there at the same speed. This is how you get back in sync. It happens the
+  instant you lift your finger.
+- **Slower / Faster** — the two big buttons along the bottom. Each press is 5%,
+  and the percentage shows in the line under the top bar once it is not 100%.
+- **Pause** — the small button in the top right corner, deliberately far from
+  where you tap. Press it again to carry on.
+- **Restart** — the middle button at the bottom. Always goes back to the top and
+  starts again, delay and all.
+
+Dragging with your finger still works normally and the scroll picks up from
+wherever you leave it, rather than snapping back.
+
+Speeding up or slowing down is a deliberate change and stays as you set it; the
+"finishes exactly on time" promise applies to the plan it starts with.
 
 ## Getting it onto the iPhone and iPad
 
