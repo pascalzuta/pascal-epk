@@ -66,18 +66,24 @@ The reader has a plain text editor so you can fix any song by hand.
 
 ## Step 2 — the reader
 
-### The first time
+### On the Mac: just double-click
+
+Double-click **`Chord Reader.command`** in this folder. It updates itself,
+reads your PDFs, builds the app and opens it in your browser. The first run
+asks you to drag your PDF folder onto the window; after that it remembers.
+
+Leave the black window open while you use the app. To stop, click that window
+and press **Control + C**.
+
+The only thing it cannot install for you is Node. If it says so, get it once
+from https://nodejs.org (the big green LTS button) and double-click again.
+
+### The same thing by hand
 
     cd ~/path/to/pascal-epk/chord-reader
     npm install
-
-### Every time you want to use it
-
     npm run build
     npm run preview
-
-Terminal prints an address. Open it in Safari. Leave that Terminal window
-running while you use the app.
 
 `npm run build` is what folds your songs into the app, so run it again after
 every time you run the PDF converter.
