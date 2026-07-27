@@ -10,6 +10,7 @@
 
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, statSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { basename, extname, join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -208,34 +209,221 @@ function toChordPro(song) {
 // Reading the PDFs
 // ---------------------------------------------------------------------------
 
-function checkPdftotext() {
-  try {
-    execFileSync('pdftotext', ['-v'], { stdio: 'ignore' });
-  } catch {
-    console.error(
-      [
-        '',
-        'This script needs a tool called pdftotext, which is not installed.',
-        '',
-        'To install it, open Terminal and run:',
-        '    brew install poppler',
-        '',
-        'If that says "brew: command not found", install Homebrew first from',
-        'https://brew.sh, then run the line above again.',
-        '',
-      ].join('\n')
-    );
-    process.exit(1);
-  }
+// macOS can already read PDF text on its own, using the same engine Preview
+// uses. This is that, kept here so the script stays a single file you can
+// download by itself. It is only used when pdftotext is not installed.
+const MAC_PDF_READER = `// Reads the text layer out of a PDF using the PDF reader already built into
+// macOS, so nothing has to be installed.
+//
+// Run by osascript, never by node:
+//     osascript -l JavaScript mac-pdf-text.jxa.js <file.pdf>
+//
+// Apple's PDFKit can tell us the exact rectangle every single character sits
+// in. That is better information than a text dump gives, so the columns are
+// rebuilt from the real positions: characters are grouped into lines by how
+// far down the page they are, then spaced out across the line by how far
+// across they are. The result looks like "pdftotext -layout", which is what
+// the converter expects.
+
+ObjC.import('Quartz');
+ObjC.import('Foundation');
+
+function median(numbers) {
+  if (numbers.length === 0) return 0;
+  var sorted = numbers.slice().sort(function (a, b) {
+    return a - b;
+  });
+  return sorted[Math.floor(sorted.length / 2)];
 }
 
-function pdfToLayoutText(file) {
-  // -layout keeps the columns lined up. Images are ignored: this only ever
-  // reads the text layer.
-  return execFileSync('pdftotext', ['-layout', '-nopgbrk', file, '-'], {
-    encoding: 'utf8',
-    maxBuffer: 32 * 1024 * 1024,
+function charactersOnPage(page) {
+  var text = ObjC.unwrap(page.string) || '';
+  var count = page.numberOfCharacters;
+  var characters = [];
+
+  for (var i = 0; i < count; i++) {
+    var ch = text[i];
+    if (ch === undefined || ch === '\\n' || ch === '\\r') continue;
+
+    var box;
+    try {
+      box = page.characterBoundsAtIndex(i);
+    } catch (e) {
+      continue;
+    }
+    var width = box.size.width;
+    var height = box.size.height;
+    // Characters PDFKit invented (line breaks and the like) have no size.
+    if (!(width > 0) || !(height > 0)) continue;
+
+    characters.push({ x: box.origin.x, y: box.origin.y, w: width, h: height, ch: ch });
+  }
+  return characters;
+}
+
+function pageToLayoutText(page) {
+  var characters = charactersOnPage(page);
+  if (characters.length === 0) return '';
+
+  var heights = characters.map(function (c) {
+    return c.h;
   });
+  var widths = characters
+    .filter(function (c) {
+      return c.ch !== ' ';
+    })
+    .map(function (c) {
+      return c.w;
+    });
+
+  var lineHeight = median(heights);
+  var columnWidth = median(widths);
+  if (!(columnWidth > 0)) columnWidth = lineHeight * 0.5;
+  var sameLine = lineHeight * 0.6;
+
+  // Down the page first. PDF pages measure upwards from the bottom, so a
+  // larger y is higher up.
+  characters.sort(function (a, b) {
+    return b.y - a.y;
+  });
+
+  var lines = [];
+  var current = null;
+  characters.forEach(function (c) {
+    if (current === null || Math.abs(current.y - c.y) > sameLine) {
+      current = { y: c.y, chars: [] };
+      lines.push(current);
+    }
+    current.chars.push(c);
+  });
+
+  var leftEdge = Math.min.apply(
+    null,
+    characters.map(function (c) {
+      return c.x;
+    })
+  );
+
+  return lines
+    .map(function (line) {
+      line.chars.sort(function (a, b) {
+        return a.x - b.x;
+      });
+
+      // Group into words first. Placing single characters on a grid pushes
+      // them into each other, because real type is not evenly spaced: an "i"
+      // is half the width of an "m". Words keep their own spacing and only
+      // their starting point is placed on the grid.
+      var words = [];
+      var word = null;
+      var gapThatSeparates = columnWidth * 0.4;
+      line.chars.forEach(function (c) {
+        var separated =
+          word === null ||
+          c.ch === ' ' ||
+          c.x - (word.x + word.width) > gapThatSeparates;
+        if (separated) {
+          if (c.ch === ' ') {
+            word = null;
+            return;
+          }
+          word = { x: c.x, width: c.w, text: c.ch };
+          words.push(word);
+        } else {
+          word.text += c.ch;
+          word.width = c.x + c.w - word.x;
+        }
+      });
+
+      var out = '';
+      words.forEach(function (w) {
+        var column = Math.round((w.x - leftEdge) / columnWidth);
+        // Words never touch: there is always at least one space between them.
+        if (column <= out.length) column = out.length === 0 ? 0 : out.length + 1;
+        while (out.length < column) out += ' ';
+        out += w.text;
+      });
+      return out.replace(/\\s+\$/, '');
+    })
+    .join('\\n');
+}
+
+function run(argv) {
+  if (argv.length < 1) {
+    \$.NSFileHandle.fileHandleWithStandardError.writeData(
+      \$('usage: osascript -l JavaScript mac-pdf-text.jxa.js <file.pdf>\\n').dataUsingEncoding(
+        \$.NSUTF8StringEncoding
+      )
+    );
+    return;
+  }
+
+  var url = \$.NSURL.fileURLWithPath(\$(argv[0]));
+  var doc = \$.PDFDocument.alloc.initWithURL(url);
+  if (!doc || doc.isNil()) throw new Error('this file could not be opened as a PDF');
+  if (doc.isEncrypted && doc.isLocked) throw new Error('this PDF is locked');
+
+  var pages = [];
+  for (var i = 0; i < doc.pageCount; i++) {
+    pages.push(pageToLayoutText(doc.pageAtIndex(i)));
+  }
+
+  var text = pages.join('\\n\\n');
+  \$.NSFileHandle.fileHandleWithStandardOutput.writeData(
+    \$(text).dataUsingEncoding(\$.NSUTF8StringEncoding)
+  );
+}
+`;
+
+const have = (command, args) => {
+  try {
+    execFileSync(command, args, { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// -layout keeps the columns lined up, which is what tells us which chord sits
+// over which syllable. Images are ignored: only the text layer is ever read.
+const readWithPdftotext = (file) =>
+  execFileSync('pdftotext', ['-layout', '-nopgbrk', file, '-'], {
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+  });
+
+let macReaderPath = null;
+function readWithMacOS(file) {
+  if (macReaderPath === null) {
+    macReaderPath = join(tmpdir(), 'chord-reader-pdf-text.js');
+    writeFileSync(macReaderPath, MAC_PDF_READER, 'utf8');
+  }
+  return execFileSync('osascript', ['-l', 'JavaScript', macReaderPath, file], {
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+  });
+}
+
+// Prefers pdftotext when it is there, because it is quick and well proven.
+// Otherwise falls back to what macOS already has, so nothing needs installing.
+function chooseReader() {
+  if (have('pdftotext', ['-v'])) return { name: 'pdftotext', read: readWithPdftotext };
+  if (process.platform === 'darwin' && have('osascript', ['-e', '1'])) {
+    return { name: "the PDF reader built into macOS", read: readWithMacOS };
+  }
+  console.error(
+    [
+      '',
+      'This script needs something that can read the text out of a PDF, and',
+      'could not find one.',
+      '',
+      'On a Mac it uses the reader built into the system, so this should not',
+      'normally happen. Otherwise install pdftotext:',
+      '    brew install poppler',
+      '',
+    ].join('\n')
+  );
+  process.exit(1);
 }
 
 const titleFromFilename = (file) =>
@@ -304,13 +492,14 @@ function main() {
     process.exit(1);
   }
 
-  checkPdftotext();
+  const reader = chooseReader();
+  console.log(`\nReading the PDFs with ${reader.name}...\n`);
 
   const songs = [];
   const failed = [];
   for (const pdf of pdfs) {
     try {
-      const song = parseSong(pdfToLayoutText(pdf), titleFromFilename(pdf));
+      const song = parseSong(reader.read(pdf), titleFromFilename(pdf));
       if (!song.body) {
         failed.push([basename(pdf), 'no text found — it may be a scan or picture']);
         continue;
