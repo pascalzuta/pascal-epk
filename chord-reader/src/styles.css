@@ -1,0 +1,385 @@
+/* Dark pub, arm's length, one glance. Big, plain, high contrast. */
+
+:root {
+  --scale: 1;
+  --bg: #000;
+  --text: #fff;
+  --chord: #ffd166;
+  --section: #6ee7ff;
+  --dim: #8a8a8a;
+  --edge: #2a2a2a;
+  /* Sized for iPad portrait first (about 30px there), shrinking on a phone so
+     lines still fit, growing on a big screen. The text size control multiplies
+     whatever this works out to. */
+  --lyric-size: calc(clamp(1.35rem, 3.6vw, 2.15rem) * var(--scale));
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  /* Stop the whole page bouncing when a song is scrolled. */
+  overscroll-behavior: none;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+/* --- bars and buttons ------------------------------------------------------ */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--edge);
+  flex: none;
+}
+
+.topbar-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-title-left {
+  text-align: left;
+}
+
+.btn {
+  appearance: none;
+  background: #161616;
+  color: var(--text);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  min-height: 48px; /* thumb-sized, no looking */
+  min-width: 48px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+}
+
+.btn-on {
+  background: var(--chord);
+  color: #000;
+  border-color: var(--chord);
+}
+
+.btn-danger {
+  background: #7f1d1d;
+  border-color: #7f1d1d;
+}
+
+.btn-big {
+  font-size: 1.6rem;
+  min-width: 64px;
+}
+
+.btn-wide {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.btn-next {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: 45%;
+  overflow: hidden;
+}
+
+/* On a phone there is no room for the song title and the next song on one row,
+   and the next song has to stay visible, so it drops onto its own full-width
+   row underneath. */
+@media (max-width: 620px) {
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .btn-next {
+    order: 10;
+    max-width: none;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.next-label {
+  color: var(--dim);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex: none;
+}
+
+.next-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- the key / capo line --------------------------------------------------- */
+
+.keyline {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  color: var(--dim);
+  font-size: 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--edge);
+  flex: none;
+}
+
+.keyline-shapes {
+  color: var(--chord);
+}
+
+/* --- settings panel -------------------------------------------------------- */
+
+.settings {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--edge);
+  flex: none;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.setting-label {
+  flex: 1;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.setting-hint {
+  display: block;
+  color: var(--dim);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.setting-value {
+  min-width: 4ch;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- the chord sheet itself ------------------------------------------------ */
+
+.sheet {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px 16px 0;
+  font-size: var(--lyric-size);
+  line-height: 1.15;
+}
+
+.sheet-end {
+  /* Lets the last line reach the middle of the screen when scrolling. */
+  height: 45vh;
+}
+
+.section {
+  color: var(--section);
+  font-size: calc(var(--lyric-size) * 0.62);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 1.1em 0 0.35em;
+}
+
+.section:first-child {
+  margin-top: 0;
+}
+
+.line {
+  margin: 0 0 0.55em;
+  font-weight: 600;
+  overflow-wrap: break-word;
+}
+
+.line-plain {
+  margin-bottom: 0.2em;
+}
+
+.pair {
+  display: inline-block;
+  /* Top alignment keeps every chord on the same level across the line. Each box
+     holds a single word, so it never needs to wrap inside itself. */
+  vertical-align: top;
+  white-space: pre;
+}
+
+.chord {
+  display: block;
+  color: var(--chord);
+  font-size: 0.72em;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: pre;
+}
+
+.lyric {
+  display: block;
+}
+
+/* Intros, riffs and turnarounds: chords on their own, spaced out. */
+.line-chords {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1em 0.7em;
+}
+
+.chord-alone {
+  display: inline;
+  font-size: 0.8em;
+}
+
+.repeat {
+  color: var(--dim);
+  font-size: 0.7em;
+  font-weight: 700;
+}
+
+/* --- lists ----------------------------------------------------------------- */
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 12px calc(24px + env(safe-area-inset-bottom));
+}
+
+.list-heading {
+  color: var(--dim);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 28px 4px 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--edge);
+}
+
+.row-number {
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+  text-align: right;
+  font-weight: 700;
+}
+
+.row-title {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  background: none;
+  border: 0;
+  color: var(--text);
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-align: left;
+  padding: 18px 4px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-flag {
+  color: var(--chord);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --- notices and the editor ------------------------------------------------ */
+
+.notice {
+  padding: 18px 16px;
+  color: var(--dim);
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.notice-small {
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  flex: none;
+}
+
+.notice code {
+  color: var(--chord);
+  font-size: 0.95em;
+}
+
+.editor {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  background: #0b0b0b;
+  color: var(--text);
+  border: 0;
+  border-top: 1px solid var(--edge);
+  padding: 14px 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: none;
+}
+
+.editor:focus {
+  outline: none;
+}
+
+.editor-actions {
+  flex: none;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--edge);
+}

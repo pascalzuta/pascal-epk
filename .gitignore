@@ -3,3 +3,9 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+
+# Chord reader: the generated song library is private and never goes into git.
+# The original PDFs live outside this repository entirely.
+chord-reader/library/
+chord-reader/node_modules/
+chord-reader/dist/
