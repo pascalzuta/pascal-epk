@@ -1,5 +1,8 @@
 .DS_Store
 Thumbs.db
+
+# Pristine source videos, kept out of the deployed tree (see build-media.sh)
+_originals/
 *.swp
 .vscode/
 .idea/
@@ -9,3 +12,4 @@ Thumbs.db
 chord-reader/library/
 chord-reader/node_modules/
 chord-reader/dist/
+.gstack/
