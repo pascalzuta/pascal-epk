@@ -3,8 +3,35 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pascal — Solo Acoustic · Live</title>
-<meta name="description" content="Solo acoustic. Songs people know, played like they mean it. Available for pub and intimate venue bookings." />
+<title>Pascal Zuta — Solo Acoustic Musician | Marin County</title>
+<meta name="description" content="Solo acoustic. Songs people know, played like they mean it. Available for pub and intimate venue bookings across Marin County and the San Francisco Bay Area." />
+<link rel="canonical" href="https://zuta.co/" />
+
+<!-- Open Graph / Twitter -->
+<meta property="og:title" content="Pascal Zuta — Solo Acoustic · Marin County" />
+<meta property="og:description" content="A voice, a guitar, and songs worth hearing again. Solo acoustic for pubs and intimate venues across Marin County and the San Francisco Bay Area." />
+<meta property="og:image" content="https://zuta.co/og-image.jpg" />
+<meta property="og:url" content="https://zuta.co/" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Pascal Zuta — Solo Acoustic · Marin County" />
+<meta name="twitter:description" content="A voice, a guitar, and songs worth hearing again. Solo acoustic across Marin County and the San Francisco Bay Area." />
+<meta name="twitter:image" content="https://zuta.co/og-image.jpg" />
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  "name": "Pascal Zuta",
+  "@id": "https://zuta.co/",
+  "url": "https://zuta.co/",
+  "image": "https://zuta.co/og-image.jpg",
+  "genre": "acoustic",
+  "email": "pascal@zuta.co",
+  "areaServed": ["Marin County", "San Francisco Bay Area"]
+}
+</script>
 <link rel="icon" href="favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -558,35 +585,32 @@
     .marquee-row { animation: none !important; }
   }
 
-  /* ===== HERO SLIDER ===== */
-  .hero-slider { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-  .hero-track { display: flex; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.4,0,.2,1); }
-  .hero-slide { flex: 0 0 100%; width: 100%; height: 100%; position: relative; overflow: hidden; background: #14110f; }
-  .hero-slide video, .hero-slide img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; object-position: center 22%; display: block;
-    animation: none !important;  /* no ken-burns inside the slider */
+  /* ===== HIGHLIGHT REEL ===== */
+  .video-reel { margin-top: 24px; }
+  .video-reel video { display: block; width: 100%; height: auto; background: var(--ink); }
+  .video-reel figcaption {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: var(--ink);
+    opacity: 0.8;
   }
-  .hero-overlay { z-index: 2; pointer-events: none; }  /* gradient + text above slides; let drags pass through */
-  .hero-arrow {
-    position: absolute; top: 42%; transform: translateY(-50%); z-index: 4;
-    width: 44px; height: 44px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.28);
-    color: #fff; font-family: "EB Garamond", serif; font-size: 26px; line-height: 1;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
-    transition: background .2s ease, border-color .2s ease, opacity .2s ease;
+
+  /* ===== BOOKING DETAILS ===== */
+  .booking-details { margin-top: 32px; }
+  .booking-details .label { margin-bottom: 10px; }
+  .booking-line {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink);
+    max-width: 42ch;
+    margin: 0 auto;
   }
-  .hero-arrow:hover { background: rgba(0,0,0,0.5); border-color: #fff; }
-  .hero-arrow svg { display: block; }
-  .hero-arrow.prev { left: 18px; } .hero-arrow.next { right: 18px; }
-  .hero-dots { position: absolute; bottom: 16px; left: 0; right: 0; z-index: 4; display: flex; gap: 9px; justify-content: center; }
-  .hero-dot { width: 9px; height: 9px; border-radius: 50%; border: none; padding: 0; cursor: pointer; background: rgba(255,255,255,0.45); transition: background .2s ease, transform .2s ease; }
-  .hero-dot.active { background: #fff; transform: scale(1.25); }
-  .hero { cursor: grab; } .hero.dragging { cursor: grabbing; }
-  @media (max-width: 640px) {
-    .hero-arrow { width: 38px; height: 38px; font-size: 22px; }
-    .hero-arrow.prev { left: 10px; } .hero-arrow.next { right: 10px; }
+
+  /* ===== MOBILE TOP BAR ===== */
+  /* On narrow phones drop the "Solo Acoustic · " prefix so the booking link never truncates. */
+  @media (max-width: 480px) {
+    .topbar-prefix { display: none; }
   }
 </style>
 </head>
@@ -596,7 +620,7 @@
 
   <!-- TOP BAR -->
   <div class="top-bar">
-    <span class="label" style="margin-bottom:0; color: var(--ink);">Solo Acoustic · <a href="#booking" class="topbar-link">Available for booking</a></span>
+    <span class="label" style="margin-bottom:0; color: var(--ink);"><span class="topbar-prefix">Solo Acoustic · </span><a href="#booking" class="topbar-link">Available for booking</a></span>
     <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -617,32 +641,15 @@
     </ul>
     <div class="nav-footer">
       <span>Bookings</span>
-      <a href="mailto:pascal.zuta@gmail.com">pascal.zuta@gmail.com</a>
+      <a href="mailto:pascal@zuta.co">pascal@zuta.co</a>
     </div>
   </aside>
 
-  <!-- HERO (slider: video · photo · video) + name + tagline overlay -->
+  <!-- HERO (single looping muted montage) + name + tagline overlay -->
   <div class="hero">
-    <div class="hero-slider">
-      <div class="hero-track" id="heroTrack">
-        <div class="hero-slide">
-          <img src="pascal-hero-bw.jpg" alt="Pascal smiling with his acoustic guitar, black and white" />
-        </div>
-        <div class="hero-slide">
-          <video muted playsinline preload="auto" poster="dancing-poster.jpg">
-            <source src="new-videos/Dancing in the Dark.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="hero-slide">
-          <img src="new-photos/nonamebar-09.jpg" alt="Pascal with his acoustic guitar at the No Name Bar" />
-        </div>
-        <div class="hero-slide">
-          <video muted playsinline preload="metadata" poster="wild-poster.jpg">
-            <source src="new-videos/Wild World.mp4" type="video/mp4" />
-          </video>
-        </div>
-      </div>
-    </div>
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="hero-poster.jpg">
+      <source src="hero-loop.mp4" type="video/mp4" />
+    </video>
     <div class="hero-overlay">
       <div class="hero-text">
         <h1>Pascal Zuta</h1>
@@ -650,10 +657,16 @@
         <p class="tagline">A voice, a guitar, and songs worth hearing again.</p>
       </div>
     </div>
-    <button class="hero-arrow prev" id="heroPrev" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"></polyline></svg></button>
-    <button class="hero-arrow next" id="heroNext" aria-label="Next slide"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 5 16 12 9 19"></polyline></svg></button>
-    <div class="hero-dots" id="heroDots"></div>
   </div>
+  <script>
+    /* Respect prefers-reduced-motion: don't autoplay — show the poster. */
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        var v = document.querySelector('.hero-video');
+        if (v) { v.removeAttribute('autoplay'); v.pause(); v.load(); }
+      }
+    })();
+  </script>
 
   <!-- BIO -->
   <div class="section bio" id="bio">
@@ -669,45 +682,52 @@
   <div class="section" id="video">
     <span class="label">Video</span>
     <h2>Live takes.</h2>
+    <figure class="video-reel">
+      <video controls preload="metadata" poster="new-videos/highlight-reel-poster.jpg">
+        <source src="new-videos/highlight-reel.mp4" type="video/mp4" />
+        Your browser doesn't support HTML video.
+      </video>
+      <figcaption>75 seconds of highlights &mdash; five songs, live.</figcaption>
+    </figure>
     <div class="video-grid">
       <figure>
         <video controls preload="metadata" poster="new-videos/riptide-poster.jpg">
-          <source src="new-videos/Riptide.mp4" type="video/mp4" />
+          <source src="new-videos/riptide.mp4" type="video/mp4" />
           Your browser doesn't support HTML video.
         </video>
         <figcaption>Riptide &mdash; Vance Joy</figcaption>
       </figure>
       <figure>
         <video controls preload="metadata" poster="new-videos/allwant-poster.jpg">
-          <source src="new-videos/All I Want is You.mp4" type="video/mp4" />
+          <source src="new-videos/all-i-want-is-you.mp4" type="video/mp4" />
           Your browser doesn't support HTML video.
         </video>
         <figcaption>All I Want is You &mdash; U2</figcaption>
       </figure>
       <figure>
         <video controls preload="metadata" poster="new-videos/dancing-poster.jpg">
-          <source src="new-videos/Dancing in the Dark.mp4" type="video/mp4" />
+          <source src="new-videos/dancing-in-the-dark.mp4" type="video/mp4" />
           Your browser doesn't support HTML video.
         </video>
         <figcaption>Dancing in the Dark &mdash; Springsteen</figcaption>
       </figure>
       <figure>
         <video controls preload="metadata" poster="new-videos/wild-poster.jpg">
-          <source src="new-videos/Wild World.mp4" type="video/mp4" />
+          <source src="new-videos/wild-world.mp4" type="video/mp4" />
           Your browser doesn't support HTML video.
         </video>
         <figcaption>Wild World &mdash; Cat Stevens</figcaption>
       </figure>
       <figure>
         <video controls preload="metadata" poster="new-videos/house-poster.jpg">
-          <source src="new-videos/House of the RIsing Sun.mp4" type="video/mp4" />
+          <source src="new-videos/house-of-the-rising-sun.mp4" type="video/mp4" />
           Your browser doesn't support HTML video.
         </video>
         <figcaption>House of the Rising Sun &mdash; The Animals</figcaption>
       </figure>
       <figure>
         <video controls preload="metadata" poster="new-videos/forever-poster.jpg">
-          <source src="new-videos/Forever.mp4" type="video/mp4" />
+          <source src="new-videos/forever.mp4" type="video/mp4" />
           Your browser doesn't support HTML video.
         </video>
         <figcaption>Forever &mdash; Mumford and Sons</figcaption>
@@ -745,12 +765,12 @@
   <div class="section" id="photos">
     <div class="photos-full">
       <div class="photo-grid">
-        <img src="new-photos/screenshot.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
-        <img src="new-photos/nonamebar-09.jpg" alt="Pascal with his acoustic guitar at the No Name Bar" style="object-position: center 22%;" />
-        <img src="new-photos/TP_5.5Pascal_Winters_04.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
-        <img src="new-photos/TP_5.5Pascal_Winters_08.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
-        <img src="new-photos/nonamebar-03.jpg" alt="Pascal singing into the microphone at the No Name Bar" style="object-position: 40% 20%;" />
-        <img src="new-photos/TP_5.5Pascal_Winters_07.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/screenshot.jpg" srcset="new-photos/screenshot-800.jpg 800w, new-photos/screenshot.jpg 1200w" sizes="(max-width: 640px) 100vw, 50vw" width="1200" height="1970" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/nonamebar-09.jpg" srcset="new-photos/nonamebar-09-800.jpg 800w, new-photos/nonamebar-09.jpg 1600w" sizes="(max-width: 640px) 100vw, 50vw" width="1600" height="1068" loading="lazy" decoding="async" alt="Pascal with his acoustic guitar at the No Name Bar" style="object-position: center 22%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_04.jpg" srcset="new-photos/TP_5.5Pascal_Winters_04-800.jpg 800w, new-photos/TP_5.5Pascal_Winters_04.jpg 1200w" sizes="(max-width: 640px) 100vw, 50vw" width="1200" height="1797" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_08.jpg" srcset="new-photos/TP_5.5Pascal_Winters_08-800.jpg 800w, new-photos/TP_5.5Pascal_Winters_08.jpg 1600w" sizes="(max-width: 640px) 100vw, 50vw" width="1600" height="2000" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/nonamebar-03.jpg" srcset="new-photos/nonamebar-03-800.jpg 800w, new-photos/nonamebar-03.jpg 1600w" sizes="(max-width: 640px) 100vw, 50vw" width="1600" height="1068" loading="lazy" decoding="async" alt="Pascal singing into the microphone at the No Name Bar" style="object-position: 40% 20%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_07.jpg" srcset="new-photos/TP_5.5Pascal_Winters_07-800.jpg 800w, new-photos/TP_5.5Pascal_Winters_07.jpg 1200w" sizes="(max-width: 640px) 100vw, 50vw" width="1200" height="1797" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
       </div>
     </div>
   </div>
@@ -805,9 +825,13 @@
     <span class="label">Booking</span>
     <h2>Get in touch.</h2>
     <p class="contact">
-      <a href="mailto:pascal.zuta@gmail.com">pascal.zuta@gmail.com</a>
+      <a href="mailto:pascal@zuta.co">pascal@zuta.co</a>
     </p>
     <p class="location">Marin County, California</p>
+    <div class="booking-details">
+      <span class="label">Details</span>
+      <p class="booking-line">Two 45-minute sets or one 90-minute set&ensp;·&ensp;Brings his own PA&ensp;·&ensp;Marin, San Francisco, North Bay &amp; East Bay</p>
+    </div>
     <div class="meta">
       <span>Pascal · Live</span>
       <span>EPK · 2026</span>
@@ -899,107 +923,11 @@
     // (repertoire marquee removed — keep the static list)
   })();
 </script>
-<script>
-  /* ===== HERO SLIDER (auto-sequence until first interaction) ===== */
-  (function () {
-    var hero = document.querySelector('.hero');
-    var track = document.getElementById('heroTrack');
-    var dotsWrap = document.getElementById('heroDots');
-    if (!hero || !track) return;
-    var slides = [].slice.call(track.children);
-    var n = slides.length, i = 0;
-    var auto = true, timer = null;
-    var PHOTO_DELAY = 4000; // ms to linger on a photo before auto-advancing
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) { auto = false; }
-
-    var dots = slides.map(function (_, k) {
-      var b = document.createElement('button');
-      b.className = 'hero-dot' + (k === 0 ? ' active' : '');
-      b.setAttribute('aria-label', 'Go to slide ' + (k + 1));
-      b.addEventListener('click', function () { stopAuto(); go(k); });
-      dotsWrap.appendChild(b);
-      return b;
-    });
-
-    function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
-
-    // first user interaction ends the auto-sequence and lets every clip loop
-    function stopAuto() {
-      clearTimer();
-      if (!auto) return;
-      auto = false;
-      slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; });
-    }
-    if (reduce) { slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; }); }
-
-    function playOnly(idx) {
-      slides.forEach(function (s, k) {
-        var v = s.querySelector('video'); if (!v) return;
-        if (k === idx) { try { v.currentTime = 0; } catch (e) {} var p = v.play(); if (p && p.catch) p.catch(function () {}); }
-        else { try { v.pause(); } catch (e) {} }
-      });
-    }
-
-    function activate() {
-      track.style.transform = 'translateX(' + (-i * 100) + '%)';
-      dots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
-      playOnly(i);
-      if (!auto) return;
-      clearTimer();
-      var vid = slides[i].querySelector('video');
-      if (!vid) timer = setTimeout(function () { if (auto) advance(); }, PHOTO_DELAY); // photo: linger then advance
-      // video: advances on its 'ended' event (handler below)
-    }
-
-    function advance() {
-      if (!auto) return;
-      if (i >= n - 1) {  // reached the final slide → end the sequence, loop the last clip
-        auto = false; clearTimer();
-        slides.forEach(function (s) { var v = s.querySelector('video'); if (v) v.loop = true; });
-        var lv = slides[i].querySelector('video');
-        if (lv) { try { lv.currentTime = 0; } catch (e) {} var p = lv.play(); if (p && p.catch) p.catch(function () {}); }
-        return;
-      }
-      i += 1; activate();
-    }
-
-    function go(k) { i = (k + n) % n; activate(); }
-
-    slides.forEach(function (s) {
-      var v = s.querySelector('video');
-      if (v) v.addEventListener('ended', function () { if (auto && slides[i] === s) advance(); });
-    });
-
-    document.getElementById('heroPrev').addEventListener('click', function () { stopAuto(); go(i - 1); });
-    document.getElementById('heroNext').addEventListener('click', function () { stopAuto(); go(i + 1); });
-
-    hero.setAttribute('tabindex', '0');
-    hero.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowLeft') { stopAuto(); go(i - 1); }
-      else if (e.key === 'ArrowRight') { stopAuto(); go(i + 1); }
-    });
-
-    // drag / swipe
-    var x0 = null, dx = 0, dragging = false;
-    function dstart(x) { x0 = x; dx = 0; dragging = true; track.style.transition = 'none'; hero.classList.add('dragging'); }
-    function dmove(x) { if (!dragging) return; dx = x - x0; track.style.transform = 'translateX(calc(' + (-i * 100) + '% + ' + dx + 'px))'; }
-    function dend() {
-      if (!dragging) return;
-      dragging = false; hero.classList.remove('dragging'); track.style.transition = '';
-      if (Math.abs(dx) > 55) { stopAuto(); go(i + (dx < 0 ? 1 : -1)); }
-      else { track.style.transform = 'translateX(' + (-i * 100) + '%)'; } // snap back, don't restart
-      x0 = null; dx = 0;
-    }
-    hero.addEventListener('touchstart', function (e) { dstart(e.touches[0].clientX); }, { passive: true });
-    hero.addEventListener('touchmove', function (e) { dmove(e.touches[0].clientX); }, { passive: true });
-    hero.addEventListener('touchend', dend);
-    hero.addEventListener('mousedown', function (e) { if (e.target.closest('.hero-arrow,.hero-dot')) return; dstart(e.clientX); e.preventDefault(); });
-    window.addEventListener('mousemove', function (e) { if (dragging) dmove(e.clientX); });
-    window.addEventListener('mouseup', dend);
-
-    activate(); // start on slide 0 (B&W photo); the 4s timer kicks off the sequence
-  })();
-</script>
+<!-- Analytics: GoatCounter — privacy-friendly, no cookies, no consent banner.
+     TODO: sign up at https://www.goatcounter.com, create a site (e.g. "zuta"),
+     then uncomment this and replace YOURCODE with your site code.
+<script data-goatcounter="https://YOURCODE.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+-->
 </body>
 </html>
