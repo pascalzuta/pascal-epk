@@ -585,16 +585,6 @@
     .marquee-row { animation: none !important; }
   }
 
-  /* ===== HIGHLIGHT REEL ===== */
-  .video-reel { margin-top: 24px; }
-  .video-reel video { display: block; width: 100%; height: auto; background: var(--ink); }
-  .video-reel figcaption {
-    margin-top: 8px;
-    font-size: 0.95rem;
-    color: var(--ink);
-    opacity: 0.8;
-  }
-
   /* ===== BOOKING DETAILS ===== */
   .booking-details { margin-top: 32px; }
   .booking-details .label { margin-bottom: 10px; }
@@ -647,7 +637,7 @@
 
   <!-- HERO (single looping muted montage) + name + tagline overlay -->
   <div class="hero">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="hero-poster.jpg">
+    <video class="hero-video" muted loop playsinline preload="metadata" poster="hero-poster.jpg">
       <source src="hero-loop.mp4" type="video/mp4" />
     </video>
     <div class="hero-overlay">
@@ -659,12 +649,17 @@
     </div>
   </div>
   <script>
-    /* Respect prefers-reduced-motion: don't autoplay — show the poster. */
+    /* Hold on the black-and-white poster for 4s, then start the loop.
+       prefers-reduced-motion: stay on the poster, never play. */
     (function () {
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        var v = document.querySelector('.hero-video');
-        if (v) { v.removeAttribute('autoplay'); v.pause(); v.load(); }
-      }
+      var v = document.querySelector('.hero-video');
+      if (!v) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      try { v.preload = 'auto'; v.load(); } catch (e) {}   // buffer during the hold so playback is instant at 4s
+      setTimeout(function () {
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      }, 4000);
     })();
   </script>
 
@@ -682,13 +677,6 @@
   <div class="section" id="video">
     <span class="label">Video</span>
     <h2>Live takes.</h2>
-    <figure class="video-reel">
-      <video controls preload="metadata" poster="new-videos/highlight-reel-poster.jpg">
-        <source src="new-videos/highlight-reel.mp4" type="video/mp4" />
-        Your browser doesn't support HTML video.
-      </video>
-      <figcaption>75 seconds of highlights &mdash; five songs, live.</figcaption>
-    </figure>
     <div class="video-grid">
       <figure>
         <video controls preload="metadata" poster="new-videos/riptide-poster.jpg">
@@ -765,12 +753,12 @@
   <div class="section" id="photos">
     <div class="photos-full">
       <div class="photo-grid">
-        <img src="new-photos/screenshot.jpg" srcset="new-photos/screenshot-800.jpg 800w, new-photos/screenshot.jpg 1200w" sizes="(max-width: 640px) 100vw, 50vw" width="1200" height="1970" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
-        <img src="new-photos/nonamebar-09.jpg" srcset="new-photos/nonamebar-09-800.jpg 800w, new-photos/nonamebar-09.jpg 1600w" sizes="(max-width: 640px) 100vw, 50vw" width="1600" height="1068" loading="lazy" decoding="async" alt="Pascal with his acoustic guitar at the No Name Bar" style="object-position: center 22%;" />
-        <img src="new-photos/TP_5.5Pascal_Winters_04.jpg" srcset="new-photos/TP_5.5Pascal_Winters_04-800.jpg 800w, new-photos/TP_5.5Pascal_Winters_04.jpg 1200w" sizes="(max-width: 640px) 100vw, 50vw" width="1200" height="1797" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
-        <img src="new-photos/TP_5.5Pascal_Winters_08.jpg" srcset="new-photos/TP_5.5Pascal_Winters_08-800.jpg 800w, new-photos/TP_5.5Pascal_Winters_08.jpg 1600w" sizes="(max-width: 640px) 100vw, 50vw" width="1600" height="2000" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
-        <img src="new-photos/nonamebar-03.jpg" srcset="new-photos/nonamebar-03-800.jpg 800w, new-photos/nonamebar-03.jpg 1600w" sizes="(max-width: 640px) 100vw, 50vw" width="1600" height="1068" loading="lazy" decoding="async" alt="Pascal singing into the microphone at the No Name Bar" style="object-position: 40% 20%;" />
-        <img src="new-photos/TP_5.5Pascal_Winters_07.jpg" srcset="new-photos/TP_5.5Pascal_Winters_07-800.jpg 800w, new-photos/TP_5.5Pascal_Winters_07.jpg 1200w" sizes="(max-width: 640px) 100vw, 50vw" width="1200" height="1797" loading="lazy" decoding="async" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/screenshot.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/nonamebar-09.jpg" alt="Pascal with his acoustic guitar at the No Name Bar" style="object-position: center 22%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_04.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_08.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
+        <img src="new-photos/nonamebar-03.jpg" alt="Pascal singing into the microphone at the No Name Bar" style="object-position: 40% 20%;" />
+        <img src="new-photos/TP_5.5Pascal_Winters_07.jpg" alt="Pascal performing live" style="object-position: center 25%;" />
       </div>
     </div>
   </div>

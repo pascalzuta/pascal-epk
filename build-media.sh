@@ -77,30 +77,7 @@ ffmpeg -y -v error \
   -map "[v]" -an -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p \
   -movflags +faststart hero-loop.mp4
 
-# ─── 4. Highlight reel: 5x 15s with audio, per-excerpt loudnorm, <=12MB ────
-echo "== highlight-reel.mp4 (75s, with audio) =="
-ffmpeg -y -v error \
-  -ss "$START_RIPTIDE" -t 15 -i "$R" \
-  -ss "$START_ALLWANT" -t 15 -i "$A" \
-  -ss "$START_DANCING" -t 15 -i "$D" \
-  -ss "$START_WILD"    -t 15 -i "$W" \
-  -ss "$START_HOUSE"   -t 15 -i "$H" \
-  -filter_complex "\
-[0:v]scale=1280:720,setsar=1,fps=30[v0];[0:a]loudnorm=I=-16:TP=-1.5:LRA=11[a0];\
-[1:v]scale=1280:720,setsar=1,fps=30[v1];[1:a]loudnorm=I=-16:TP=-1.5:LRA=11[a1];\
-[2:v]scale=1280:720,setsar=1,fps=30[v2];[2:a]loudnorm=I=-16:TP=-1.5:LRA=11[a2];\
-[3:v]scale=1280:720,setsar=1,fps=30[v3];[3:a]loudnorm=I=-16:TP=-1.5:LRA=11[a3];\
-[4:v]scale=1280:720,setsar=1,fps=30[v4];[4:a]loudnorm=I=-16:TP=-1.5:LRA=11[a4];\
-[v0][a0][v1][a1][v2][a2][v3][a3][v4][a4]concat=n=5:v=1:a=1[v][a]" \
-  -map "[v]" -map "[a]" \
-  -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p \
-  -c:a aac -b:a 128k -movflags +faststart new-videos/highlight-reel.mp4
-
-echo "== highlight-reel-poster.jpg =="
-ffmpeg -y -v error -ss 2 -i new-videos/highlight-reel.mp4 -frames:v 1 \
-  -vf scale=1280:720 -q:v 3 new-videos/highlight-reel-poster.jpg
-
-# ─── 5. Re-encode the six full takes (kebab-case, CRF 27) ──────────────────
+# ─── 4. Re-encode the six full takes (kebab-case, CRF 27) ──────────────────
 encode_take () {  # $1=source  $2=out-basename
   echo "== $2.mp4 =="
   ffmpeg -y -v error -i "$1" \
@@ -114,24 +91,6 @@ encode_take "$W" wild-world
 encode_take "$H" house-of-the-rising-sun
 encode_take "$F" forever
 
-# ─── 6. Photos: 800px srcset variants + recompress large originals ─────────
-GRID=(screenshot nonamebar-09 TP_5.5Pascal_Winters_04 TP_5.5Pascal_Winters_08 nonamebar-03 TP_5.5Pascal_Winters_07)
-for name in "${GRID[@]}"; do
-  echo "== new-photos/$name-800.jpg =="
-  sips --resampleWidth 800 "new-photos/$name.jpg" \
-       -s format jpeg -s formatOptions 80 \
-       --out "new-photos/$name-800.jpg" >/dev/null
-done
-# The two portrait photos start over 300KB. They only ever display at <=800px
-# (the 800w srcset variant carries the display); the "full" variant is retina
-# headroom only, so cap it at 1200px. q80 actually *inflates* these already-lean
-# sources, so tune quality per-file to land under 300KB.
-# NOTE: run from pristine sources — `git checkout` these two first if re-running.
-echo "== new-photos/TP_5.5Pascal_Winters_04.jpg (1200w, <=300KB) =="
-sips --resampleWidth 1200 new-photos/TP_5.5Pascal_Winters_04.jpg \
-     -s format jpeg -s formatOptions 74 --out new-photos/TP_5.5Pascal_Winters_04.jpg >/dev/null
-echo "== new-photos/TP_5.5Pascal_Winters_07.jpg (1200w, <=300KB) =="
-sips --resampleWidth 1200 new-photos/TP_5.5Pascal_Winters_07.jpg \
-     -s format jpeg -s formatOptions 62 --out new-photos/TP_5.5Pascal_Winters_07.jpg >/dev/null
+# Photos in new-photos/ are used as-is (originals) — no derived variants.
 
 echo "DONE."
