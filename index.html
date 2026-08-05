@@ -649,7 +649,7 @@
     </div>
   </div>
   <script>
-    /* Hold on the black-and-white poster for 4s, then start the loop.
+    /* Hold on the black-and-white poster for 8s, then start the loop.
        prefers-reduced-motion: stay on the poster, never play. */
     (function () {
       var v = document.querySelector('.hero-video');
@@ -659,7 +659,7 @@
       setTimeout(function () {
         var p = v.play();
         if (p && p.catch) p.catch(function () {});
-      }, 4000);
+      }, 8000);
     })();
   </script>
 
