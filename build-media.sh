@@ -58,7 +58,7 @@ START_RIPTIDE=84.0
 START_ALLWANT=27.0
 START_DANCING=51.2
 START_WILD=62.1
-START_HOUSE=34.4
+START_HOUSE=54.0   # hero-loop opens here; picked for the light on his face
 START_FOREVER=98.9
 
 # ─── 2. Still images (sips) ────────────────────────────────────────────────
