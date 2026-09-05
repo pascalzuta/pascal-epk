@@ -693,7 +693,7 @@
         <figcaption>All I Want is You &mdash; U2</figcaption>
       </figure>
       <figure>
-        <video controls preload="metadata" poster="new-videos/dancing-poster.jpg">
+        <video controls preload="metadata" poster="new-videos/dancing-poster.jpg?v=2">
           <source src="new-videos/dancing-in-the-dark.mp4?v=2" type="video/mp4" />
           Your browser doesn't support HTML video.
         </video>
@@ -909,6 +909,16 @@
     }
 
     // The repertoire list is static, with no marquee.
+
+    // Only one video plays at a time: starting one pauses the others.
+    var videos = document.querySelectorAll('video[controls]');
+    videos.forEach(function (v) {
+      v.addEventListener('play', function () {
+        videos.forEach(function (other) {
+          if (other !== v) other.pause();
+        });
+      });
+    });
   })();
 </script>
 <!-- Analytics: GoatCounter — privacy-friendly, no cookies, no consent banner. -->
