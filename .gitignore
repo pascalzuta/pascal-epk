@@ -13,3 +13,4 @@ chord-reader/library/
 chord-reader/node_modules/
 chord-reader/dist/
 .gstack/
+.claude/

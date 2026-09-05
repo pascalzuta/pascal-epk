@@ -71,17 +71,20 @@ sips --resampleWidth 1200 new-photos/nonamebar-09.jpg --out /tmp/_og.jpg >/dev/n
 sips -c 630 1200 /tmp/_og.jpg -s format jpeg -s formatOptions 88 --out og-image.jpg >/dev/null
 rm -f /tmp/_og.jpg
 
-# ─── 3. Hero loop: 4x 6s hard-cut, muted, no audio track, <=4MB ────────────
-# Clip order: House of the Rising Sun leads, so the first thing that moves after
-# the poster hold is the disco-ball room. Then it alternates rooms: house (bar
-# with the disco ball) → riptide (living room) → dancing (disco ball) → wild
-# world (living room).
-echo "== hero-loop.mp4 (24s, silent) =="
+# ─── 3. Hero loop: hard-cut, muted, no audio track, <=4MB ──────────────────
+# 2026-09-05: sources moved to Dropbox originals — the new-videos/ takes are
+# now short excerpts (see section 4 note) and no longer cover these offsets.
+# Clip order: All I Want Is You (35s-50s) leads, then riptide → dancing → wild
+# world at 6s each.
+DBX="/Users/pascal/Dropbox (Personal)/Pascal Zuto_Edits"
+NB="$DBX/6.13.26 Pascal No Name Bar"
+WTV="$DBX/5.5.26 Pascal Winters Tavern"
+echo "== hero-loop.mp4 (33s, silent) =="
 ffmpeg -y -v error \
-  -ss "$START_HOUSE"   -t 6 -i "$H" \
-  -ss "$START_RIPTIDE" -t 6 -i "$R" \
-  -ss "$START_DANCING" -t 6 -i "$D" \
-  -ss "$START_WILD"    -t 6 -i "$W" \
+  -ss 35               -t 15 -i "$WTV/All I Want is You.mp4" \
+  -ss "$START_RIPTIDE" -t 6 -i "$NB/Riptide.mp4" \
+  -ss "$START_DANCING" -t 6 -i "$WTV/Dancing in the Dark.mp4" \
+  -ss "$START_WILD"    -t 6 -i "$NB/Wild World.mp4" \
   -filter_complex "[0:v]scale=1280:720,setsar=1,fps=30[v0];\
 [1:v]scale=1280:720,setsar=1,fps=30[v1];\
 [2:v]scale=1280:720,setsar=1,fps=30[v2];\
@@ -91,6 +94,10 @@ ffmpeg -y -v error \
   -movflags +faststart hero-loop.mp4
 
 # ─── 4. Re-encode the six full takes (kebab-case, CRF 27) ──────────────────
+# 2026-09-05: riptide, all-i-want-is-you, dancing-in-the-dark (No Name Bar
+# take) and redemption-song in new-videos/ are excerpts cut directly from the
+# Dropbox originals with a 1s audio ramp-in and 3s fade-out — see the session
+# that produced them. encode_take below skips them (no _originals/ copy).
 encode_take () {  # $1=source  $2=out-basename
   if [[ "$1" == "new-videos/$2.mp4" ]]; then
     echo "== $2.mp4 (already encoded, no original to re-encode from — skipped) =="
