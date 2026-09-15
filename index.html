@@ -360,32 +360,6 @@
     padding-top: 24px;
     border-top: 1px solid var(--rule);
   }
-  .bio .repertoire-intro {
-    font-family: "Inter", sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--mute);
-    margin-top: 32px;
-    margin-bottom: 16px;
-  }
-  .bio .songs-inline {
-    columns: 2;
-    column-gap: 40px;
-    font-family: "EB Garamond", Georgia, serif;
-    font-size: 17px;
-    line-height: 1.9;
-    color: var(--ink);
-  }
-  .bio .songs-inline .song { break-inside: avoid; display: block; }
-  .bio .songs-inline .song em { color: var(--mute); font-style: italic; }
-  .bio .songs-note {
-    font-size: 13px;
-    color: var(--mute);
-    margin-top: 16px;
-  }
-
   /* ---------- PHOTOS ---------- */
   .photos-full {
     width: 100vw;
@@ -535,7 +509,6 @@
     .hero { aspect-ratio: auto; height: 64vh; }
     .hero img { object-position: center 22%; }
     .hero-text { top: 40%; padding: 0 24px; }
-    .bio .songs-inline { columns: 1; font-size: 18px; }
     .photo-grid { grid-template-columns: 1fr; }
     .photo-grid img { aspect-ratio: 4/3; }
     .booking { padding: 48px 24px 64px; }
@@ -566,23 +539,9 @@
   .track:hover { padding-left: 8px; }
   .photo-grid img:hover, .video-grid figure:hover { transition-delay: 0s; }
 
-  /* repertoire marquee */
-  .songs-inline.marquee { columns: auto !important; display: block; overflow: hidden; position: relative;
-    -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-    mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
-  .marquee-row { display: flex; gap: 40px; width: max-content; white-space: nowrap; will-change: transform; }
-  .marquee-row + .marquee-row { margin-top: 4px; }
-  .marquee-row .song { display: inline-block; }
-  .marquee-row.r1 { animation: mqL 38s linear infinite; }
-  .marquee-row.r2 { animation: mqR 44s linear infinite; }
-  @keyframes mqL { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @keyframes mqR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-  .songs-inline.marquee:hover .marquee-row { animation-play-state: paused; }
-
   @media (prefers-reduced-motion: reduce) {
     .hero video, .hero img, .hero-overlay h1 .ch, .hero .divider, .hero .tagline { animation: none !important; opacity: 1 !important; transform: none !important; }
     .reveal { opacity: 1 !important; transform: none !important; }
-    .marquee-row { animation: none !important; }
   }
 
   /* ===== BOOKING DETAILS ===== */
@@ -624,7 +583,6 @@
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
       <li><a href="/#video">Video</a></li>
-      <li><a href="/#repertoire">Repertoire</a></li>
       <li><a href="/#photos">Photos</a></li>
       <li><a href="/#music">Music</a></li>
       <li><a href="/#booking">Booking</a></li>
@@ -721,30 +679,6 @@
         <figcaption>Forever &mdash; Mumford and Sons</figcaption>
       </figure>
     </div>
-  </div>
-
-  <hr/>
-
-  <!-- REPERTOIRE -->
-  <div class="section bio" id="repertoire">
-    <span class="label">Repertoire</span>
-    <h2>Set list highlights.</h2>
-    <div class="songs-inline">
-      <span class="song">Forever <em>&mdash; Mumford and Sons</em></span>
-      <span class="song">Wild World <em>&mdash; Cat Stevens</em></span>
-      <span class="song">Yellow <em>&mdash; Coldplay</em></span>
-      <span class="song">The Door <em>&mdash; Teddy Swims</em></span>
-      <span class="song">Dancing in the Dark <em>&mdash; Springsteen</em></span>
-      <span class="song">Fast Car <em>&mdash; Tracy Chapman</em></span>
-      <span class="song">Creep <em>&mdash; Radiohead</em></span>
-      <span class="song">Take Me to Church <em>&mdash; Hozier</em></span>
-      <span class="song">True Colors <em>&mdash; Cyndi Lauper</em></span>
-      <span class="song">The Fate of Ophelia <em>&mdash; Taylor Swift</em></span>
-      <span class="song">Is This Love <em>&mdash; Bob Marley</em></span>
-      <span class="song">Good Riddance <em>&mdash; Green Day</em></span>
-      <span class="song">Don&rsquo;t Look Back in Anger <em>&mdash; Oasis</em></span>
-    </div>
-    <p class="songs-note">Full repertoire on request.</p>
   </div>
 
   <hr/>
@@ -895,7 +829,7 @@
     }
 
     // scroll-reveal
-    var sel = '.section .label, .section h2, .section .bio-text, .track, .video-grid figure, .photo-grid img, .booking .contact, .booking .location, .songs-note';
+    var sel = '.section .label, .section h2, .section .bio-text, .track, .video-grid figure, .photo-grid img, .booking .contact, .booking .location';
     var items = [].slice.call(document.querySelectorAll(sel));
     if ('IntersectionObserver' in window && !reduce) {
       var io = new IntersectionObserver(function (es) {
@@ -907,8 +841,6 @@
       });
       document.querySelectorAll('.track').forEach(function (el, i) { el.style.transitionDelay = (i * 0.05) + 's'; });
     }
-
-    // The repertoire list is static, with no marquee.
 
     // Only one video plays at a time: starting one pauses the others.
     var videos = document.querySelectorAll('video[controls]');
