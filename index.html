@@ -529,7 +529,7 @@
   .hero video, .hero img { animation: kenburns 24s ease-out forwards; }
   @keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.14); } }
   .hero .hero-photo { opacity: 0; transition: opacity 1.2s ease; }
-  .hero .hero-photo.on { opacity: 1; }
+  .hero .hero-photo.on { opacity: 0.99; }
   .hero-overlay h1 .ch { display: inline-block; opacity: 0; transform: translateY(24px); animation: chIn .62s cubic-bezier(.2,.7,.2,1) forwards; }
   @keyframes chIn { to { opacity: 1; transform: none; } }
   .hero .divider, .hero .tagline { opacity: 0; animation: fadeUp .8s ease forwards; }
@@ -619,7 +619,7 @@
     </div>
   </div>
   <script>
-    /* Hold on the black-and-white poster for 8s, then the colour photo for 6s, then start the loop.
+    /* Hold on the black-and-white poster for 8s, then the colour photo for 6s, then cross-fade into the loop.
        prefers-reduced-motion: stay on the poster, never play. */
     (function () {
       var v = document.querySelector('.hero-video');
@@ -627,14 +627,18 @@
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       try { v.preload = 'auto'; v.load(); } catch (e) {}   // buffer during the hold so playback is instant at 4s
       var photo = document.querySelector('.hero-photo');
-      // 8s: fade in the colour photo. 14s: fade it out, then start the loop.
-      // Chrome pauses a muted video that is fully covered, so play only once the photo is see-through.
+      // 8s: fade in the colour photo. 14s: start the loop under the photo, and fade the photo out
+      // only once the video is showing frames, so the b/w poster never flashes back in between.
+      // The photo sits at 0.99 opacity: Chrome can pause a muted video that is fully covered.
       setTimeout(function () { if (photo) photo.classList.add('on'); }, 8000);
-      setTimeout(function () { if (photo) photo.classList.remove('on'); }, 14000);
       setTimeout(function () {
+        var done = false;
+        function reveal() { if (done) return; done = true; if (photo) photo.classList.remove('on'); }
+        v.addEventListener('playing', function () { setTimeout(reveal, 150); }, { once: true });
+        setTimeout(reveal, 4000);   // fallback if playback never starts
         var p = v.play();
-        if (p && p.catch) p.catch(function () {});
-      }, 14500);
+        if (p && p.catch) p.catch(reveal);
+      }, 14000);
     })();
   </script>
 
