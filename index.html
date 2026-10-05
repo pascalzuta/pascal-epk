@@ -441,6 +441,8 @@
     height: auto;
     background: var(--ink);
   }
+  /* vertical clips: 16:9 box like the others; poster is a 16:9 crop, playback pillarboxes */
+  .video-grid video.vertical { aspect-ratio: 16/9; object-fit: contain; }
   .video-grid figcaption {
     margin-top: 8px;
     font-size: 0.95rem;
@@ -520,6 +522,8 @@
   /* hero: slow zoom + animated headline */
   .hero video, .hero img { animation: kenburns 24s ease-out forwards; }
   @keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.14); } }
+  .hero .hero-photo { opacity: 0; transition: opacity 1.2s ease; }
+  .hero .hero-photo.on { opacity: 1; }
   .hero-overlay h1 .ch { display: inline-block; opacity: 0; transform: translateY(24px); animation: chIn .62s cubic-bezier(.2,.7,.2,1) forwards; }
   @keyframes chIn { to { opacity: 1; transform: none; } }
   .hero .divider, .hero .tagline { opacity: 0; animation: fadeUp .8s ease forwards; }
@@ -541,6 +545,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .hero video, .hero img, .hero-overlay h1 .ch, .hero .divider, .hero .tagline { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .hero .hero-photo { opacity: 0 !important; }
     .reveal { opacity: 1 !important; transform: none !important; }
   }
 
@@ -598,6 +603,7 @@
     <video class="hero-video" muted loop playsinline preload="metadata" poster="hero-poster.jpg">
       <source src="hero-loop.mp4?v=2" type="video/mp4" />
     </video>
+    <img class="hero-photo" src="new-photos/window-neon.jpg" alt="" aria-hidden="true" style="object-position: 64% 30%;" />
     <div class="hero-overlay">
       <div class="hero-text">
         <h1>Pascal Zuta</h1>
@@ -607,17 +613,22 @@
     </div>
   </div>
   <script>
-    /* Hold on the black-and-white poster for 8s, then start the loop.
+    /* Hold on the black-and-white poster for 8s, then the colour photo for 6s, then start the loop.
        prefers-reduced-motion: stay on the poster, never play. */
     (function () {
       var v = document.querySelector('.hero-video');
       if (!v) return;
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       try { v.preload = 'auto'; v.load(); } catch (e) {}   // buffer during the hold so playback is instant at 4s
+      var photo = document.querySelector('.hero-photo');
+      // 8s: fade in the colour photo. 14s: fade it out, then start the loop.
+      // Chrome pauses a muted video that is fully covered, so play only once the photo is see-through.
+      setTimeout(function () { if (photo) photo.classList.add('on'); }, 8000);
+      setTimeout(function () { if (photo) photo.classList.remove('on'); }, 14000);
       setTimeout(function () {
         var p = v.play();
         if (p && p.catch) p.catch(function () {});
-      }, 8000);
+      }, 14500);
     })();
   </script>
 
@@ -677,6 +688,20 @@
           Your browser doesn't support HTML video.
         </video>
         <figcaption>Forever &mdash; Mumford and Sons</figcaption>
+      </figure>
+      <figure>
+        <video class="vertical" controls preload="none" poster="new-videos/eob-poster.jpg">
+          <source src="new-videos/end-of-beginning.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>End of Beginning &mdash; Djo (Duo)</figcaption>
+      </figure>
+      <figure>
+        <video class="vertical" controls preload="none" poster="new-videos/iris-poster.jpg">
+          <source src="new-videos/iris.mp4" type="video/mp4" />
+          Your browser doesn't support HTML video.
+        </video>
+        <figcaption>Iris &mdash; Goo Goo Dolls (Duo)</figcaption>
       </figure>
     </div>
   </div>
