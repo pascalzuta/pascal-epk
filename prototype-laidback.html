@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Pascal Zuta Laid-back</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="favicon.ico" sizes="any" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap">
+<style>
+  /* Layout: one quiet column, no motion, candid photos, first-person copy.
+     Same brand as zuta.co (Garamond, Inter, cream, red), used more sparingly. */
+  :root {
+    --bg: #f4efe6;
+    --ink: #1a1714;
+    --mute: #857c70;
+    --rule: #d8cfbd;
+    --accent: #b23a1f;
+    --note: #ebe3d3;
+    --serif: "EB Garamond", Georgia, serif;
+    --sans: "Inter", -apple-system, system-ui, sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, video { display: block; max-width: 100%; }
+
+  .col {
+    max-width: 640px; margin: 0 auto;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  section.col { padding-block: 56px; }
+  hr { border: 0; border-top: 1px solid var(--rule); max-width: 600px; margin: 0 auto; }
+
+  .label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--mute); display: block; margin-bottom: 14px;
+  }
+  h1, h2 { font-family: var(--serif); font-weight: 400; text-wrap: balance; }
+  h2 { font-size: 30px; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 18px; }
+  p + p { margin-top: 14px; }
+
+  /* top: name left, one quiet link right */
+  .top {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    padding-block: 18px;
+  }
+  .top .name { font-family: var(--serif); font-size: 20px; }
+  .top a.book { font-size: 13px; color: var(--mute); border-bottom: 1px solid var(--rule); }
+
+  /* hero: just the photo, then a few words under it */
+  .hero-img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 30%; filter: grayscale(1); }
+  .intro { padding-block: 28px 8px; }
+  .intro h1 { font-size: clamp(40px, 11vw, 64px); line-height: 0.95; letter-spacing: -0.02em; }
+  .intro p { font-family: var(--serif); font-size: 22px; line-height: 1.4; margin-top: 14px; max-width: 30ch; }
+
+  .about p { font-family: var(--serif); font-size: 21px; line-height: 1.5; }
+
+  /* listening */
+  .tracks { border-top: 1px solid var(--rule); }
+  .track { border-bottom: 1px solid var(--rule); padding: 16px 0; }
+  .track-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .track-title { font-family: var(--serif); font-size: 21px; }
+  .track-artist { font-size: 13px; color: var(--mute); white-space: nowrap; }
+  .track audio { width: 100%; height: 36px; margin-top: 10px; opacity: 0.75; }
+
+  /* song notes: the stories */
+  .notes { display: grid; gap: 28px; }
+  .note h3 { font-family: var(--serif); font-weight: 500; font-size: 21px; }
+  .note h3 span { font-weight: 400; font-style: italic; color: var(--mute); font-size: 17px; }
+  .note p { margin-top: 6px; }
+  .draft {
+    background: var(--note); padding: 12px 14px; margin-top: 8px;
+    font-size: 15px; color: var(--mute); font-style: italic;
+  }
+  .draft b { font-style: normal; font-weight: 500; color: var(--accent); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 2px; }
+
+  /* video */
+  .videos { display: grid; gap: 28px; }
+  .videos video { width: 100%; aspect-ratio: 16 / 9; background: var(--ink); }
+  .videos figcaption { font-size: 14px; margin-top: 8px; }
+  .videos figcaption span { color: var(--mute); }
+
+  /* photos: uneven, like a handful of snapshots */
+  .snaps { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px; }
+  .snaps img { width: 100%; height: 100%; object-fit: cover; }
+  .snaps .wide { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
+  .snaps .tall { aspect-ratio: 3 / 4; }
+
+  /* booking: plain */
+  .booking p { font-family: var(--serif); font-size: 21px; line-height: 1.5; }
+  .booking .mail { display: inline-block; font-family: var(--serif); font-size: 26px; border-bottom: 1px solid var(--accent); margin-top: 12px; user-select: all; }
+  .booking .fine { font-family: var(--sans); font-size: 14px; color: var(--mute); margin-top: 18px; }
+  footer { padding-block: 24px 48px; font-size: 12px; color: var(--mute); }
+
+  a:focus-visible, audio:focus-visible, video:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header class="col top">
+  <span class="name">Pascal Zuta</span>
+  <a class="book" href="#booking">Booking</a>
+</header>
+
+<img class="hero-img" src="hero-poster.jpg" alt="Pascal laughing mid-song with an acoustic guitar, Sausalito">
+
+<div class="col intro">
+  <h1>Pascal Zuta</h1>
+  <p>Acoustic songs in small rooms around Marin and San Francisco.</p>
+</div>
+
+<section class="col about" id="about">
+  <span class="label">About</span>
+  <p>I sing and play acoustic guitar, mostly in bars, wineries and private parties around the Bay Area. The set is songs I love: Springsteen, U2, Bob Marley, Neil Young, Mumford and Sons, and a few of my own.</p>
+  <p>I keep it quiet enough that people can still talk, and loose enough that it never feels like a show.</p>
+</section>
+
+<hr>
+
+<section class="col" id="listen">
+  <span class="label">Listen</span>
+  <h2>A few recordings</h2>
+  <div class="tracks">
+    <div class="track">
+      <div class="track-head"><span class="track-title">The Trail</span><span class="track-artist">Original</span></div>
+      <audio controls preload="none" src="pascal-the-trail.mp3"></audio>
+    </div>
+    <div class="track">
+      <div class="track-head"><span class="track-title">Falling Slowly</span><span class="track-artist">Glen Hansard</span></div>
+      <audio controls preload="none" src="new-audio/Falling Slowly.mp3"></audio>
+    </div>
+    <div class="track">
+      <div class="track-head"><span class="track-title">Creep</span><span class="track-artist">Radiohead</span></div>
+      <audio controls preload="none" src="new-audio/CREEP.m4a"></audio>
+    </div>
+    <div class="track">
+      <div class="track-head"><span class="track-title">Dancing in the Dark</span><span class="track-artist">Bruce Springsteen</span></div>
+      <audio controls preload="none" src="new-audio/Dancing in the Dark.mp3"></audio>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<section class="col" id="notes">
+  <span class="label">Song notes</span>
+  <h2>Why I play these</h2>
+  <div class="notes">
+    <div class="note">
+      <h3>The Trail <span>original</span></h3>
+      <p class="draft"><b>Your words</b>Two or three lines on where you wrote it, or who it's about. Plain, like telling a friend.</p>
+    </div>
+    <div class="note">
+      <h3>Falling Slowly <span>Glen Hansard</span></h3>
+      <p class="draft"><b>Your words</b>When you first heard it, and why it stuck.</p>
+    </div>
+    <div class="note">
+      <h3>Long May You Run <span>Neil Young</span></h3>
+      <p class="draft"><b>Your words</b>A small, specific memory tied to this song.</p>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<section class="col" id="video">
+  <span class="label">Video</span>
+  <h2>Live</h2>
+  <div class="videos">
+    <figure>
+      <video controls preload="none" poster="new-videos/redemption-poster.jpg"><source src="new-videos/redemption-song.mp4" type="video/mp4"></video>
+      <figcaption>Redemption Song, Bob Marley <span>· No Name Bar, Sausalito</span></figcaption>
+    </figure>
+    <figure>
+      <video controls preload="none" poster="new-videos/napa-poster.jpg"><source src="new-videos/napa-corporate.mp4" type="video/mp4"></video>
+      <figcaption>Long May You Run, Neil Young <span>· Corporate event, Napa</span></figcaption>
+    </figure>
+    <figure>
+      <video controls preload="none" poster="new-videos/allwant-poster.jpg"><source src="new-videos/all-i-want-is-you.mp4" type="video/mp4"></video>
+      <figcaption>All I Want Is You, U2 <span>· Winters, Pacifica</span></figcaption>
+    </figure>
+    <figure>
+      <video controls preload="none" poster="new-videos/riptide-poster.jpg"><source src="new-videos/riptide.mp4" type="video/mp4"></video>
+      <figcaption>Riptide, Vance Joy <span>· No Name Bar, Sausalito</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<hr>
+
+<section class="col" id="photos">
+  <span class="label">Photos</span>
+  <div class="snaps">
+    <img class="wide" src="new-photos/nonamebar-09.jpg" alt="Pascal in a green T-shirt playing guitar at No Name Bar" style="object-position: 30% 30%;">
+    <img class="tall" src="new-photos/TP_5.5Pascal_Winters_07.jpg" alt="Pascal in a black T-shirt playing a blue acoustic guitar at Winters" style="object-position: 50% 30%;">
+    <img class="tall" src="new-photos/nonamebar-03.jpg" alt="Pascal seated, singing at No Name Bar" style="object-position: 62% 40%;">
+    <img class="wide" src="new-photos/window-neon.jpg" alt="Pascal singing by a rain-streaked window at night" style="object-position: 60% 40%;">
+  </div>
+</section>
+
+<hr>
+
+<section class="col booking" id="booking">
+  <span class="label">Booking</span>
+  <p>If you'd like me to play your bar, winery or party, send a note.</p>
+  <span class="mail">pascal@zuta.co</span>
+  <p class="fine">Marin, San Francisco, North Bay and East Bay. I bring my own PA or use the house sound.</p>
+</section>
+
+<footer class="col">Pascal Zuta · Marin County, California</footer>
+</body>
+</html>
