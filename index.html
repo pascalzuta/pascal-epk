@@ -635,6 +635,15 @@
   @media (max-width: 480px) {
     .topbar-prefix { display: none; }
   }
+
+  /* ===== LATEST GIG ===== */
+  .latest .when { color: var(--mute); font-size: 14px; margin: -12px 0 24px; }
+  .latest-media { max-width: 380px; margin: 0 auto; display: flex; flex-direction: column; }
+  .latest-handle { align-self: flex-end; margin-bottom: 12px; }
+  .latest-media .ig-follow { align-self: flex-start; }
+  .latest-media video { display: block; width: 100%; aspect-ratio: 9/16; object-fit: cover; background: var(--ink); }
+  .latest-media figcaption { margin-top: 8px; font-size: 0.95rem; opacity: 0.8; }
+  .latest .ig-follow { margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -656,6 +665,7 @@
     </div>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
+      <li><a href="/#latest">Latest gig</a></li>
       <li><a href="/#video">Video</a></li>
       <li><a href="/#photos">Photos</a></li>
       <li><a href="/#music">Music</a></li>
@@ -712,7 +722,29 @@
     <span class="label">Bio</span>
     <p class="bio-text">
       Pascal Zuta is a solo acoustic singer and guitarist from Marin County, California. He performs covers and originals, from Springsteen and U2 to Bob Marley, Mumford and Sons and John Mayer, at bars, wineries, corporate events, and private parties across the Bay Area. He can bring his own PA or work with the sound system at the venue.
-    </p>
+    </p>  </div>
+
+  <hr/>
+
+  <!-- LATEST GIG
+       To refresh: replace new-videos/latest-gig.mp4 and latest-gig-poster.jpg,
+       bump ?v= below, and update the venue, date, song and Instagram link. -->
+  <div class="section latest" id="latest">
+    <span class="label">Latest gig</span>
+    <h2>Ranch Water, San Rafael.</h2>
+    <p class="when">November 2026</p>
+    <figure class="latest-media">
+      <a class="ig-handle latest-handle" href="https://www.instagram.com/pascalzuta/" target="_blank" rel="noopener">@pascalzuta · 11K followers</a>
+      <video controls playsinline preload="metadata" poster="new-videos/latest-gig-poster.jpg?v=1">
+        <source src="new-videos/latest-gig.mp4?v=1" type="video/mp4" />
+        Your browser doesn't support HTML video.
+      </video>
+      <figcaption>Karma Chameleon &mdash; Culture Club</figcaption>
+      <a class="ig-follow" href="https://www.instagram.com/reel/Df5Uq5-IXXe/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg>
+        Watch on Instagram
+      </a>
+    </figure>
   </div>
 
   <hr/>
@@ -849,7 +881,7 @@
     <span class="label">Instagram</span>
     <div class="ig-head">
       <h2>Follow along.</h2>
-      <a class="ig-handle" href="https://www.instagram.com/pascalzuta/" target="_blank" rel="noopener">@pascalzuta</a>
+      <a class="ig-handle" href="https://www.instagram.com/pascalzuta/" target="_blank" rel="noopener">@pascalzuta · 11K followers</a>
     </div>
     <div class="ig-grid">
       <a href="https://www.instagram.com/pascalzuta/" target="_blank" rel="noopener" aria-label="Pascal on Instagram"><img src="new-photos/ig-1.jpg" alt="Pascal playing acoustic guitar on stage" loading="lazy" /></a>
